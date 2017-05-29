@@ -752,6 +752,48 @@ class arb: private detail::base_arb<>
             return less_equal(b, a);
         }
 		
+		// greater than or equal to, operator >=
+		static bool greater_equal(const arb &a, const arb &b)
+        {
+			return ::arb_ge(&a.m_arb, &b.m_arb);
+        }
+        template <typename T, typename std::enable_if<is_arb_int<T>::value,int>::type = 0>
+        static bool greater_equal(const arb &a, const T &n)
+        {
+            arb b(n);
+            return greater_equal(a, b);
+        }
+        template <typename T, typename std::enable_if<is_arb_int<T>::value,int>::type = 0>
+        static bool greater_equal(const T &n, const arb &a)
+        {
+            arb b(n);
+            return greater_equal(b, a);
+        }
+        template <typename T, typename std::enable_if<is_arb_uint<T>::value,int>::type = 0>
+        static bool greater_equal(const arb &a, const T &n)
+        {
+            arb b(n);
+            return greater_equal(a, b);
+        }
+        template <typename T, typename std::enable_if<is_arb_uint<T>::value,int>::type = 0>
+        static bool greater_equal(const T &n, const arb &a)
+        {
+            arb b(n);
+            return greater_equal(b, a);
+        }
+        template <typename T, typename std::enable_if<is_arb_float<T>::value,int>::type = 0>
+        static bool greater_equal(const arb &a, const T &x)
+        {
+            arb b(x);
+            return greater_equal(a, b);
+        }
+        template <typename T, typename std::enable_if<is_arb_float<T>::value,int>::type = 0>
+        static bool greater_equal(const T &x, const arb &a)
+        {
+            arb b(x);
+            return greater_equal(b, a);
+        }
+		
         // Enabler for the generic ctor.
         template <typename T>
         using generic_enabler = typename std::enable_if<is_interoperable<T>::value,int>::type;
@@ -1298,15 +1340,21 @@ class arb: private detail::base_arb<>
         }
 		
 		template <typename T, typename U>
-        friend auto operator!=(const T &a, const U &b) -> decltype(arb::equality(a,b))
+        friend auto operator!=(const T &a, const U &b) -> decltype(arb::inequality(a,b))
         {
             return inequality(a, b);
         }
 		
 		template <typename T, typename U>
-        friend auto operator<=(const T &a, const U &b) -> decltype(arb::equality(a,b))
+        friend auto operator<=(const T &a, const U &b) -> decltype(arb::less_equal(a,b))
         {
             return less_equal(a, b);
+        }
+		
+		template <typename T, typename U>
+        friend auto operator>=(const T &a, const U &b) -> decltype(arb::greater_equal(a,b))
+        {
+            return greater_equal(a, b);
         }
 		
     private:
