@@ -1461,6 +1461,14 @@ class arb: private detail::base_arb<>
 			return retval;
 		}
 		
+		arb ceil() const
+		{
+			arb retval;
+			::arb_ceil(&retval.m_arb, &m_arb, m_prec);
+			retval.m_prec = m_prec;
+			return retval;
+		}
+		
     private:
         ::arb_struct    m_arb;
         long            m_prec;
@@ -1494,6 +1502,11 @@ inline void swap(arb &a0, arb &a1) noexcept
 inline arb abs(const arb &a)
 {
 	return a.abs();
+}
+
+inline arb ceil(const arb &a)
+{
+	return a.ceil();
 }
 
 /// Literal namespace.

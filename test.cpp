@@ -140,7 +140,6 @@ void arbpp_test_abs()
 {
 	arbpp::arb A(1);
 	arbpp::arb B(-1);
-	
 	std::cout << "abs(" << A << ") : " << abs(A) << std::endl;
 	std::cout << "abs(" << B << ") : " << abs(B) << std::endl;
 	
@@ -148,6 +147,21 @@ void arbpp_test_abs()
 	B = -2.5d;
 	std::cout << "abs(" << A << ") : " << abs(A) << std::endl;
 	std::cout << "abs(" << B << ") : " << abs(B) << std::endl;
+	std::cout << std::endl;
+}
+
+void arbpp_test_ceil()
+{
+	arbpp::arb A(1);
+	arbpp::arb B(-1);
+	std::cout << "ceil(" << A << ") : " << ceil(A) << std::endl;
+	std::cout << "ceil(" << B << ") : " << ceil(B) << std::endl;
+	
+	A = 2.5d;
+	B = -2.5d;
+	std::cout << "ceil(" << A << ") : " << ceil(A) << std::endl;
+	std::cout << "ceil(" << B << ") : " << ceil(B) << std::endl;
+	std::cout << std::endl;
 }
 
 void arbpp_add_test()
@@ -159,6 +173,7 @@ void arbpp_add_test()
 	//arbpp_test_lt();
 	//arbpp_test_gt();
 	arbpp_test_abs();
+	arbpp_test_ceil();
 }
 
 int main()
