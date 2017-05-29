@@ -50,7 +50,7 @@ template <typename = void>
 struct base_arb
 {
     // Default precision, in bits.
-    static const long default_prec = 53;
+    static const long default_prec = 53;	// TODO modositashoz
     static_assert(default_prec >= MPFR_PREC_MIN && default_prec <= MPFR_PREC_MAX,
         "Invalid default precision.");
 };
@@ -886,7 +886,7 @@ class arb: private detail::base_arb<>
         /**
          * @return default precision for arbpp::arb objects.
          */
-        static long get_default_precision()
+        static constexpr long get_default_precision()
         {
             return detail::base_arb<>::default_prec;
         }
@@ -1579,6 +1579,17 @@ class arb: private detail::base_arb<>
 			return retval;
 		}
 		
+		static arb NaN_value()
+		{
+			static bool done = false;
+			static arbpp::arb retval;
+			if (!done)
+			{
+				arb_indeterminate(&retval.m_arb);
+			}
+			return retval;
+		}
+		
     private:
         ::arb_struct    m_arb;
         long            m_prec;
@@ -1699,7 +1710,7 @@ inline arb operator "" _arb(const char *s)
 }
 
 // LB additions
-#include <boost/math/constants/constants.hpp>	// egy boost libet kell includeolni hogy a megfelelo makrokat megkapja
+#include <boost/math/constants/constants.hpp>	// egy boost libet kell includeolni hogy a megfelelo makrokat megkapja TODO talan athelyezni?
 namespace boost
 {
 namespace math
@@ -1710,7 +1721,7 @@ namespace tools
 template<>
 inline int digits<arbpp::arb>(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(arbpp::arb))
 {
-	return arbpp::arb::get_default_precision();
+	return arbpp::arb::get_default_precision();	// TODO egyelore ez static konstans, kesobb lehet valtoztatni kell
 }
 template<>
 inline arbpp::arb min_value<arbpp::arb>(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(arbpp::arb))
@@ -1723,16 +1734,53 @@ inline arbpp::arb max_value<arbpp::arb>(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(a
 	return arbpp::arb::max_value();
 }
 template<>
-inline arbpp::arb epsilon<arbpp::arb>(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(arbpp::arb))
+inline arbpp::arb epsilon<arbpp::arb>(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(arbpp::arb))	// TODO ez megint static (default_precision-tol fugg), de tetsz pontossagu tipus -> valtozhat
 {
 	arbpp::arb A(1);
 	return A.ldexp(1 - boost::math::tools::digits<arbpp::arb>());
 }
+}	// namespace tools
+}	// namespace math
+}	// namespace boost
 
-}
-
-}
-
-}
+/*
+namespace std
+{
+template<>
+class numeric_limits<arbpp::arb>	// http://en.cppreference.com/w/cpp/types/numeric_limits
+{
+public:
+	static constexpr bool is_specialized = true;
+	static constexpr bool is_signed = true;
+	static constexpr bool is_integer = false;
+	static constexpr bool is_exact = false;
+	static constexpr bool has_infinity = true;
+	static constexpr bool has_quiet_NaN = true;
+	static constexpr bool has_signaling_NaN = false;
+	static constexpr bool has_denorm = false;	// "denormalizalt szam" - a vezeto 0-k atkerulnek a kitevobe hogy 0 kozeli szamokat tudjon abrazolni
+	static constexpr bool has_denorm_loss = false;
+	static constexpr std::float_round_style round_style = std::round_to_nearest;
+	static constexpr bool is_iec559 = false;
+	static constexpr bool is_bounded = false;
+	static constexpr bool is_modulo = false;
+	static constexpr int digits = arbpp::arb::get_default_precision();	// TODO egyelore ez static konstans, kesobb lehet valtoztatni kell
+	static constexpr int digits10 = arbpp::arb::get_default_precision() * std::log10(2);	// TODO
+	static constexpr int max_digits10 = std::ceil(arbpp::arb::get_default_precision() * std::log10(2) + 1);	// TODO
+	static constexpr int radix = 2;
+	static constexpr int min_exponent = -50;	// TODO tetsz pontossagnal ilyen elvileg nincs
+	static constexpr int min_exponent10 = -16;	// TODO
+	static constexpr int max_exponent = 50;	// TODO
+	static constexpr int max_exponent10 = 16;	// TODO
+	static constexpr bool traps = false;	// 0-val osztas vegtelen hosszu intervallumot ad
+	static constexpr bool tinyness_before = false;
+	// min(), lowest(), max() a has_infinity miatt nem ertelmezheto
+	//static constexpr arbpp::arb epsilon() { return ldexp(arbpp::arb(1), 1 - arbpp::arb::get_default_precision()); }	// TODO constexpr -> forditasideju erteket var
+	//static constexpr arbpp::arb round_error() { return arbpp::arb(0.5); }	// TODO
+	//static constexpr arbpp::arb infinity() { return arbpp::arb::max_value(); }	// TODO
+	//static constexpr arbpp::arb quiet_NaN() { return arbpp::arb::NaN_value(); }	// TODO
+	// signaling_NaN(), denorm_min() nem ertelmes
+};
+}	// namespace std
+*/
 
 #endif
