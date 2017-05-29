@@ -96,7 +96,7 @@ void arbpp_demo_io()
 namespace boost{
 namespace math{
 namespace constants{
-template<> arbpp::arb half<arbpp::arb>() { return arbpp::arb("0.5"); }	// this makes it work
+template<> arbpp::arb half<arbpp::arb>() { return arbpp::arb("5.00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e-01"); }	// ezzel mukodik, de valoszinuleg ertelmetlenne teszi
 }}}
 void arbpp_demo_const()
 {
@@ -121,7 +121,7 @@ void arbpp_demo_complex()
 	// complex
 	std::cout << "complex: " << C << std::endl;
 	std::cout << "asin(" << C << ") : " << asin(C) << std::endl;
-	//std::cout << "acos(" << C << ") : " << acos(C) << std::endl;	// TODO long double arb konstruktor
+	//std::cout << "acos(" << C << ") : " << acos(C) << std::endl;	// TODO long double arb konstruktor implementalasa
 	std::cout << "atan(" << C << ") : " << atan(C) << std::endl;
 	std::cout << "asinh(" << C << ") : " << asinh(C) << std::endl;
 	std::cout << "acosh(" << C << ") : " << acosh(C) << std::endl;
@@ -138,11 +138,46 @@ void arbpp_demo_gcd_lcm()
 	
 	// legkisebb kozos oszto, legnagyobb kozos tobbszoros
 		// TODO mukodeshez operator%= implementalasa
+		// vagy kell-e egyaltalan? vegulis az arb az lebegopontosan szamol, ez meg egeszekkel dolgozik
 	std::cout << "gcd(" << A << ", " << B << ") : " << boost::math::gcd(A, B) << std::endl;
 	std::cout << "lcm(" << A << ", " << B << ") : " << boost::math::lcm(A, B) << std::endl;
 	std::cout << std::endl;
 }
 */
+
+#include <boost/math/tools/roots.hpp>
+struct roots_func_D1	// f(x) = x^2 - 1 -> gyokei -1, 1
+{
+	boost::math::tuple<arbpp::arb, arbpp::arb> operator()(const arbpp::arb &a)
+	{
+		return boost::math::make_tuple( a * a, 2 * a );	// f, f'
+	}
+};
+struct roots_func_D2	// f(x) = x^2 - 1 -> gyokei -1, 1
+{
+	boost::math::tuple<arbpp::arb, arbpp::arb, arbpp::arb> operator()(const arbpp::arb &a)
+	{
+		return boost::math::make_tuple( a * a, 2 * a, arbpp::arb(2));	// f, f', f''
+	}
+};
+void arbpp_demo_deriv_roots()
+{
+	roots_func_D1 fD1;
+	roots_func_D2 fD2;
+	arbpp::arb startv(0.6);
+	arbpp::arb minv(0.25);
+	arbpp::arb maxv(5);
+	int prec = 20;
+	
+	// derivaltat hasznalo iterativ gyokkereses
+	//arbpp::arb ret = boost::math::tools::newton_raphson_iterate(fD1, startv, minv, maxv, prec);	// elso derivalt kell iteraciohoz
+	//arbpp::arb ret = boost::math::tools::halley_iterate(fD2, startv, minv, maxv, prec);	// masodik derivalt kell
+	arbpp::arb ret = boost::math::tools::schroeder_iterate(fD2, startv, minv, maxv, prec);
+	
+	std::cout << "x^2 - 1 gyoke [-1, 1]-ben: " << ret << std::endl;
+	std::cout << ret << "^2 + 1 = " << (pow(ret, arbpp::arb(2)) + 1) << std::endl;
+	std::cout << std::endl;
+}
 
 int main()
 {
@@ -152,8 +187,9 @@ int main()
 	//arbpp_demo_sign();
 	//arbpp_demo_io();
 	//arbpp_demo_const();	// TODO
-	arbpp_demo_complex();
+	//arbpp_demo_complex();
 	//arbpp_demo_gcd_lcm();	// TODO
+	//arbpp_demo_deriv_roots();
 	
 	return 0;
 }

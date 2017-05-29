@@ -932,7 +932,7 @@ class arb: private detail::base_arb<>
          * @throws unspecified any exception thrown by arb::set_precision().
          */
         template <typename T, generic_enabler<T> = 0>
-        explicit arb(const T &x, long prec = arb::get_default_precision())
+        arb(const T &x, long prec = arb::get_default_precision())
         {
             // Set the value of the prec member before doing anything, for exception safety.
             set_prec_value(prec);
@@ -965,7 +965,7 @@ class arb: private detail::base_arb<>
          * @throws std::underflow_error in case of underflow.
          * @throws unspecified any exception thrown by arb::set_precision().
          */
-        explicit arb(const std::string &str, long prec = arb::get_default_precision())
+        arb(const std::string &str, long prec = arb::get_default_precision())
         {
             // Try to parse an mpfr from the input string.
             mpfr_raii m(prec);
@@ -1470,6 +1470,11 @@ class arb: private detail::base_arb<>
 			return retval;
 		}
 		
+		arb fabs() const
+		{
+			return abs();
+		}
+		
 		arb ceil() const
 		{
 			arb retval;
@@ -1640,6 +1645,11 @@ inline void swap(arb &a0, arb &a1) noexcept
 inline arb abs(const arb &a)
 {
 	return a.abs();
+}
+
+inline arb fabs(const arb &a)
+{
+	return a.fabs();
 }
 
 inline arb ceil(const arb &a)
