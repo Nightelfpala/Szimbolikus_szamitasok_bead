@@ -626,7 +626,7 @@ class arb: private detail::base_arb<>
         }
 		
 		// LB additions
-		// equality, for operator==
+		// equality, operator==
 		static bool equality(const arb &a, const arb &b)
         {
 			return ::arb_eq(&a.m_arb, &b.m_arb);
@@ -641,7 +641,7 @@ class arb: private detail::base_arb<>
         static bool equality(const T &n, const arb &a)
         {
             arb b(n);
-            return equality(a, b);
+            return equality(b, a);
         }
         template <typename T, typename std::enable_if<is_arb_uint<T>::value,int>::type = 0>
         static bool equality(const arb &a, const T &n)
@@ -653,7 +653,7 @@ class arb: private detail::base_arb<>
         static bool equality(const T &n, const arb &a)
         {
             arb b(n);
-            return equality(a, b);
+            return equality(b, a);
         }
         template <typename T, typename std::enable_if<is_arb_float<T>::value,int>::type = 0>
         static bool equality(const arb &a, const T &x)
@@ -665,7 +665,91 @@ class arb: private detail::base_arb<>
         static bool equality(const T &x, const arb &a)
         {
             arb b(x);
-            return equality(a, b);
+            return equality(b, a);
+        }
+		
+		// ineqality, operator !=
+		static bool inequality(const arb &a, const arb &b)
+        {
+			return ::arb_ne(&a.m_arb, &b.m_arb);
+        }
+        template <typename T, typename std::enable_if<is_arb_int<T>::value,int>::type = 0>
+        static bool inequality(const arb &a, const T &n)
+        {
+            arb b(n);
+            return inequality(a, b);
+        }
+        template <typename T, typename std::enable_if<is_arb_int<T>::value,int>::type = 0>
+        static bool inequality(const T &n, const arb &a)
+        {
+            arb b(n);
+            return inequality(b, a);
+        }
+        template <typename T, typename std::enable_if<is_arb_uint<T>::value,int>::type = 0>
+        static bool inequality(const arb &a, const T &n)
+        {
+            arb b(n);
+            return inequality(a, b);
+        }
+        template <typename T, typename std::enable_if<is_arb_uint<T>::value,int>::type = 0>
+        static bool inequality(const T &n, const arb &a)
+        {
+            arb b(n);
+            return inequality(b, a);
+        }
+        template <typename T, typename std::enable_if<is_arb_float<T>::value,int>::type = 0>
+        static bool inequality(const arb &a, const T &x)
+        {
+            arb b(x);
+            return inequality(a, b);
+        }
+        template <typename T, typename std::enable_if<is_arb_float<T>::value,int>::type = 0>
+        static bool inequality(const T &x, const arb &a)
+        {
+            arb b(x);
+            return inequality(b, a);
+        }
+		
+		// less than or equal to, operator <=
+		static bool less_equal(const arb &a, const arb &b)
+        {
+			return ::arb_le(&a.m_arb, &b.m_arb);
+        }
+        template <typename T, typename std::enable_if<is_arb_int<T>::value,int>::type = 0>
+        static bool less_equal(const arb &a, const T &n)
+        {
+            arb b(n);
+            return less_equal(a, b);
+        }
+        template <typename T, typename std::enable_if<is_arb_int<T>::value,int>::type = 0>
+        static bool less_equal(const T &n, const arb &a)
+        {
+            arb b(n);
+            return less_equal(b, a);
+        }
+        template <typename T, typename std::enable_if<is_arb_uint<T>::value,int>::type = 0>
+        static bool less_equal(const arb &a, const T &n)
+        {
+            arb b(n);
+            return less_equal(a, b);
+        }
+        template <typename T, typename std::enable_if<is_arb_uint<T>::value,int>::type = 0>
+        static bool less_equal(const T &n, const arb &a)
+        {
+            arb b(n);
+            return less_equal(b, a);
+        }
+        template <typename T, typename std::enable_if<is_arb_float<T>::value,int>::type = 0>
+        static bool less_equal(const arb &a, const T &x)
+        {
+            arb b(x);
+            return less_equal(a, b);
+        }
+        template <typename T, typename std::enable_if<is_arb_float<T>::value,int>::type = 0>
+        static bool less_equal(const T &x, const arb &a)
+        {
+            arb b(x);
+            return less_equal(b, a);
         }
 		
         // Enabler for the generic ctor.
@@ -1211,6 +1295,18 @@ class arb: private detail::base_arb<>
         friend auto operator==(const T &a, const U &b) -> decltype(arb::equality(a,b))
         {
             return equality(a, b);
+        }
+		
+		template <typename T, typename U>
+        friend auto operator!=(const T &a, const U &b) -> decltype(arb::equality(a,b))
+        {
+            return inequality(a, b);
+        }
+		
+		template <typename T, typename U>
+        friend auto operator<=(const T &a, const U &b) -> decltype(arb::equality(a,b))
+        {
+            return less_equal(a, b);
         }
 		
     private:
