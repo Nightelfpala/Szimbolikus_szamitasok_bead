@@ -146,6 +146,9 @@ void arbpp_demo_gcd_lcm()
 */
 
 #include <boost/math/tools/roots.hpp>
+	// fuggveny gyokenek keresese
+namespace deriv_roots
+{
 struct roots_func_D1	// f(x) = x^2 - 1 -> gyokei -1, 1
 {
 	boost::math::tuple<arbpp::arb, arbpp::arb> operator()(const arbpp::arb &a)
@@ -160,7 +163,7 @@ struct roots_func_D2	// f(x) = x^2 - 1 -> gyokei -1, 1
 		return boost::math::make_tuple( a * a, 2 * a, arbpp::arb(2));	// f, f', f''
 	}
 };
-void arbpp_demo_deriv_roots()
+void arbpp_demo_roots()
 {
 	roots_func_D1 fD1;
 	roots_func_D2 fD2;
@@ -168,6 +171,7 @@ void arbpp_demo_deriv_roots()
 	arbpp::arb minv(0.25);
 	arbpp::arb maxv(5);
 	int prec = 20;
+	// opcionalis: max_iter, kulonben gyakorlatilag vegtelensegig futhat ha nem eri el a kivant pontossagot
 	
 	// derivaltat hasznalo iterativ gyokkereses
 	//arbpp::arb ret = boost::math::tools::newton_raphson_iterate(fD1, startv, minv, maxv, prec);	// elso derivalt kell iteraciohoz
@@ -178,6 +182,76 @@ void arbpp_demo_deriv_roots()
 	std::cout << ret << "^2 + 1 = " << (pow(ret, arbpp::arb(2)) + 1) << std::endl;
 	std::cout << std::endl;
 }
+}	// namespace deriv_roots
+
+namespace noderiv_roots
+{
+struct roots_func	// f(x) = x^3 - 1 -> gyoke 1
+{
+	arbpp::arb operator()(const arbpp::arb &a)
+	{
+		return a * a * a - 1;
+	}
+};
+struct tolerance
+{
+	bool operator()(const arbpp::arb &a, const arbpp::arb &b)	// ha az intervallumszelekkel meghivva igazat ad vissza, akkor terminal az algoritmus
+	{
+		return (abs(b - a) <= arbpp::arb(1e-5));
+	}
+};
+void arbpp_demo_roots()
+{
+	roots_func f;
+	arbpp::arb minv(-0.5);
+	arbpp::arb maxv(3.25);
+	tolerance tol;
+	// opcionalis: max_iter
+	
+	//std::pair<arbpp::arb, arbpp::arb> ret = boost::math::tools::bisect(f, minv, maxv, tol);
+		// feltetel: f(min) * f(max) <= 0 && min < max, kulonben hibat ad
+	
+	arbpp::arb guess(0.5);
+	arbpp::arb factor(2);	// ennyival oszt/szoroz lepesenkent
+	bool rising = true;	// mon novo a fv
+	boost::uintmax_t max_iter = 50;	// itt mar nem opcionalis
+	//std::pair<arbpp::arb, arbpp::arb> ret = boost::math::tools::bracket_and_solve_root(f, guess, factor, rising, tol, max_iter);
+		// csak monoton fv-re mukodik
+		// erdekes modon, ha itt a guess rossz volt (-0.5), akkor nem tudta megtalalni
+		
+	std::pair<arbpp::arb, arbpp::arb> ret = boost::math::tools::toms748_solve(f, minv, maxv, tol, max_iter);
+		// ennek elvileg nem kell monoton fv
+	
+	std::cout << "x^3 - 1 gyoke a kovetkezo intervallumban van: [" << ret.first << ", " << ret.second << "]" << std::endl;
+	std::cout << std::endl;
+}
+}	// namespace noderiv_roots
+
+#include <boost/math/tools/minima.hpp>
+	// fuggveny minimumhely kereses
+namespace minimize_func
+{
+struct min_func	// f(x) = x^2 minimalizalasa [-1, 1]-en
+{
+	arbpp::arb operator()(const arbpp::arb &a)
+	{
+		return a * a;
+	}
+};
+void arbpp_demo_minimize()
+{
+	min_func f;
+	arbpp::arb minv(-1);
+	arbpp::arb maxv(1);
+	int bits = 40;	// pontossag
+	// opcionalis: max_iter
+	
+	std::pair<arbpp::arb, arbpp::arb> ret = boost::math::tools::brent_find_minima(f, minv, maxv, bits);
+		// az intervallumban nem lehet maximum (?)
+	std::cout << "x^2 minimuma a kovetkezo intervallumban van: [" << ret.first << ", " << ret.second << "]" << std::endl;
+	std::cout << std::endl;
+}
+}	// namespace minimize_func
 
 int main()
 {
@@ -189,7 +263,9 @@ int main()
 	//arbpp_demo_const();	// TODO
 	//arbpp_demo_complex();
 	//arbpp_demo_gcd_lcm();	// TODO
-	//arbpp_demo_deriv_roots();
+	//deriv_roots::arbpp_demo_roots();
+	//noderiv_roots::arbpp_demo_roots();
+	minimize_func::arbpp_demo_minimize();
 	
 	return 0;
 }
