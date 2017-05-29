@@ -4,6 +4,9 @@
 #include <boost/math/special_functions/round.hpp>
 #include "arbpp.hpp"
 
+// http://www.boost.org/doc/libs/1_63_0/libs/math/doc/html/math_toolkit/real_concepts.html megvalositasok tesztelese
+	// https://github.com/bluescarni/arbpp kiegeszitesebol
+
 void arbpp_test_eq()
 {
 	// operator==
@@ -178,6 +181,34 @@ void arbpp_test_floor()
 	std::cout << std::endl;
 }
 
+void arbpp_test_exp()
+{
+	arbpp::arb A(1);
+	arbpp::arb B(0);
+	arbpp::arb C(-1);
+	std::cout << "exp(" << A << ") : " << exp(A) << std::endl;
+	std::cout << "exp(" << B << ") : " << exp(B) << std::endl;
+	std::cout << "exp(" << C << ") : " << exp(C) << std::endl;
+	std::cout << std::endl;
+}
+
+void arbpp_test_pow()
+{
+	arbpp::arb A(1);
+	arbpp::arb B(2);
+	arbpp::arb C(3);
+	arbpp::arb D(-1);
+	std::cout << "pow(" << A << ", " << B << ") : " << pow(A, B) << std::endl;
+	std::cout << "pow(" << B << ", " << C << ") : " << pow(B, C) << std::endl;
+	std::cout << "pow(" << B << ", " << D << ") : " << pow(B, D) << std::endl;
+	
+	// nem mukodik, de elvileg csak pow(RealType, RealType) kell, alap tipussal nem kell egyutt mukodnie
+	//std::cout << "pow(" << B << ", " << 5 << ") : " << pow(B, 5) << std::endl;
+	//std::cout << "pow(" << B << ", " << 5.0d << ") : " << pow(B, 5.0d) << std::endl;
+	
+	std::cout << std::endl;
+}
+
 void arbpp_add_test()
 {
 	//arbpp_test_eq();
@@ -187,8 +218,10 @@ void arbpp_add_test()
 	//arbpp_test_lt();
 	//arbpp_test_gt();
 	//arbpp_test_abs();
-	arbpp_test_ceil();
-	arbpp_test_floor();
+	//arbpp_test_ceil();
+	//arbpp_test_floor()
+	arbpp_test_exp();
+	arbpp_test_pow();
 }
 
 int main()

@@ -1477,6 +1477,22 @@ class arb: private detail::base_arb<>
 			return retval;
 		}
 		
+		arb exp() const
+		{
+			arb retval;
+			::arb_exp(&retval.m_arb, &m_arb, m_prec);
+			retval.m_prec = m_prec;
+			return retval;
+		}
+		
+		arb pow(const arb &other) const
+		{
+			arb retval;
+			::arb_pow(&retval.m_arb, &m_arb, &other.m_arb, m_prec);
+			retval.m_prec = m_prec;
+			return retval;
+		}
+		
     private:
         ::arb_struct    m_arb;
         long            m_prec;
@@ -1520,6 +1536,16 @@ inline arb ceil(const arb &a)
 inline arb floor(const arb &a)
 {
 	return a.floor();
+}
+
+inline arb exp(const arb &a)
+{
+	return a.exp();
+}
+
+inline arb pow(const arb &a, const arb &b)
+{
+	return a.pow(b);
 }
 
 /// Literal namespace.
