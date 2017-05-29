@@ -1558,6 +1558,14 @@ class arb: private detail::base_arb<>
 			return retval;
 		}
 		
+		arb atan2(const arb &other) const
+		{
+			arb retval;
+			::arb_atan2(&retval.m_arb, &m_arb, &other.m_arb, m_prec);
+			retval.m_prec = m_prec;
+			return retval;
+		}
+		
 		arb ldexp(int ex) const	// gepi epszilon szamitasahoz
 		{
 			arb retval;
@@ -1566,7 +1574,7 @@ class arb: private detail::base_arb<>
 			return retval;
 		}
 		
-		static arb plus_inf()	// plusz vegtelen
+		static arb pos_inf()	// plusz vegtelen
 		{
 			static bool done = false;
 			static arbpp::arb retval;
@@ -1689,6 +1697,11 @@ inline arb atan(const arb &a)
 	return a.atan();
 }
 
+inline arb atan2(const arb &a, const arb &b)
+{
+	return a.atan2(b);
+}
+
 inline arb ldexp(const arb &a, int n)
 {
 	return a.ldexp(n);
@@ -1740,7 +1753,7 @@ inline arbpp::arb min_value<arbpp::arb>(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(a
 template<>
 inline arbpp::arb max_value<arbpp::arb>(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(arbpp::arb))
 {
-	return arbpp::arb::plus_inf();
+	return arbpp::arb::pos_inf();
 }
 template<>
 inline arbpp::arb epsilon<arbpp::arb>(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(arbpp::arb))	// TODO ez megint static (default_precision-tol fugg), de tetsz pontossagu tipus -> valtozhat
@@ -1785,7 +1798,7 @@ public:
 	// min(), lowest(), max() a has_infinity miatt nem ertelmezheto
 	//static constexpr arbpp::arb epsilon() { return ldexp(arbpp::arb(1), 1 - arbpp::arb::get_default_precision()); }	// TODO constexpr -> forditasideju erteket var
 	//static constexpr arbpp::arb round_error() { return arbpp::arb(0.5); }	// TODO
-	//static constexpr arbpp::arb infinity() { return arbpp::arb::max_value(); }	// TODO
+	//static constexpr arbpp::arb infinity() { return arbpp::arb::pos_inf(); }	// TODO
 	//static constexpr arbpp::arb quiet_NaN() { return arbpp::arb::NaN_value(); }	// TODO
 	// signaling_NaN(), denorm_min() nem ertelmes
 };

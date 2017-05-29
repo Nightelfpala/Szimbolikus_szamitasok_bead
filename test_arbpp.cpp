@@ -282,6 +282,15 @@ void arbpp_test_atan()
 	std::cout << std::endl;
 }
 
+void arbpp_test_atan2()
+{
+	arbpp::arb A(0);
+	arbpp::arb B(1);
+	std::cout << "atan2(" << A << ", " << B << ") : " << atan2(A, B) << std::endl;
+	std::cout << "atan2(" << B << ", " << A << ") : " << atan2(B, A) << std::endl;
+	std::cout << std::endl;
+}
+
 void arbpp_test_ldexp()
 {
 	// ldexp(x, ex) = x * 2^ex
@@ -321,6 +330,7 @@ int main()
 	//arbpp_test_acos();	// acos()
 	//arbpp_test_tan();	// tan()
 	//arbpp_test_atan();	// atan()
+	//arbpp_test_atan2();	// atan2()
 	//arbpp_test_ldexp();	// ldexp()
 	arbpp_test_boostmathtools();
 	

@@ -53,7 +53,7 @@ void arbpp_demo_modf()
 	std::cout << std::endl;
 }
 
-//#include <boost\math\special_functions\fpclassify.hpp>	// nem tudtam beincludeolni, feltehetoleg std::numeric_limits kell
+//#include <boost/math/special_functions/fpclassify.hpp>	// nem tudtam beincludeolni, feltehetoleg std::numeric_limits kell
 	// vegesseg, NaN-sag, denormalizaltsag ellenorzesek, ezek alapjan osztalyozas
 
 #include <boost/math/special_functions/sign.hpp>
@@ -74,12 +74,12 @@ void arbpp_demo_sign()
 	std::cout << "copysign(" << A << ", " << C <<") : " << boost::math::copysign(A, C) << std::endl;
 }
 
-//#include <boost\math\special_functions\nonfinite_num_facets.hpp>	// nem tudtam beincludeolni, feltehetoleg std::numeric_limits kell
-	// string konverzio a vegtelen es NaN ertekekhez (kiiras es beolvasas) - elvileg a wrapper mar ezeket tudja operator<< -vel
+//#include <boost/math/special_functions/nonfinite_num_facets.hpp>	// nem tudtam beincludeolni, feltehetoleg std::numeric_limits kell
+	// string konverzio es IO a vegtelen es NaN ertekekhez (kiiras es beolvasas) - a wrapper mar ezeket tudja operatorokkal
 void arbpp_demo_io()
 {
 	arbpp::arb A(2.0);
-	arbpp::arb inf = arbpp::arb::plus_inf();
+	arbpp::arb inf = arbpp::arb::pos_inf();
 	arbpp::arb minf = arbpp::arb::neg_inf();
 	
 	std::cout << A << "\t" << inf << "\t" << minf << std::endl;
@@ -91,11 +91,58 @@ void arbpp_demo_io()
 	std::cout << B << std::endl;
 }
 
+/* //TODO - causes segfault on specialization
 #include <boost/math/constants/constants.hpp>
+namespace boost{
+namespace math{
+namespace constants{
+template<> arbpp::arb half<arbpp::arb>() { return arbpp::arb("0.5"); }	// this makes it work
+}}}
 void arbpp_demo_const()
 {
+	std::cout << "half:\t" << boost::math::constants::half<arbpp::arb>() << std::endl;
 	//std::cout << "pi:\t" << boost::math::constants::pi<arbpp::arb>() << std::endl;
 }
+*/
+
+//#include <boost/math/complex/asin.hpp>
+//#include <boost/math/complex/acos.hpp>
+//#include <boost/math/complex/atan.hpp>
+//#include <boost/math/complex/asinh.hpp>
+//#include <boost/math/complex/acosh.hpp>
+//#include <boost/math/complex/atanh.hpp>
+	// a headerek includeolasa nelkul is mukodnek
+void arbpp_demo_complex()
+{
+	arbpp::arb r(2.3);
+	arbpp::arb i(-0.9);
+	std::complex<arbpp::arb> C(r, i);
+	
+	// complex
+	std::cout << "complex: " << C << std::endl;
+	std::cout << "asin(" << C << ") : " << asin(C) << std::endl;
+	//std::cout << "acos(" << C << ") : " << acos(C) << std::endl;	// TODO long double arb konstruktor
+	std::cout << "atan(" << C << ") : " << atan(C) << std::endl;
+	std::cout << "asinh(" << C << ") : " << asinh(C) << std::endl;
+	std::cout << "acosh(" << C << ") : " << acosh(C) << std::endl;
+	std::cout << "atanh(" << C << ") : " << atanh(C) << std::endl;
+	std::cout << std::endl;
+}
+
+/*
+#include <boost/math/common_factor_rt.hpp>
+void arbpp_demo_gcd_lcm()
+{
+	arbpp::arb A(12);
+	arbpp::arb B(8);
+	
+	// legkisebb kozos oszto, legnagyobb kozos tobbszoros
+		// TODO mukodeshez operator%= implementalasa
+	std::cout << "gcd(" << A << ", " << B << ") : " << boost::math::gcd(A, B) << std::endl;
+	std::cout << "lcm(" << A << ", " << B << ") : " << boost::math::lcm(A, B) << std::endl;
+	std::cout << std::endl;
+}
+*/
 
 int main()
 {
@@ -103,8 +150,10 @@ int main()
 	//arbpp_demo_boosttrunc();
 	//arbpp_demo_modf();
 	//arbpp_demo_sign();
-	arbpp_demo_io();
-	arbpp_demo_const();
+	//arbpp_demo_io();
+	//arbpp_demo_const();	// TODO
+	arbpp_demo_complex();
+	//arbpp_demo_gcd_lcm();	// TODO
 	
 	return 0;
 }
