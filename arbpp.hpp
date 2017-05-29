@@ -1549,6 +1549,28 @@ class arb: private detail::base_arb<>
 			return retval;
 		}
 		
+		static arb max_value()
+		{
+			static bool done = false;
+			static arbpp::arb retval;
+			if (!done)
+			{
+				arb_pos_inf(&retval.m_arb);
+			}
+			return retval;
+		}
+		
+		static arb min_value()
+		{
+			static bool done = false;
+			static arbpp::arb retval;
+			if (!done)
+			{
+				arb_neg_inf(&retval.m_arb);
+			}
+			return retval;
+		}
+		
     private:
         ::arb_struct    m_arb;
         long            m_prec;
@@ -1657,6 +1679,36 @@ inline namespace literals
 inline arb operator "" _arb(const char *s)
 {
     return arb(s);
+}
+
+}
+
+}
+
+// LB additions
+namespace boost
+{
+namespace math
+{
+namespace tools
+{
+
+template<>
+inline int digits<arbpp::arb>(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(arbpp::arb))
+{
+	return arbpp::arb::get_default_precision();
+}
+template<>
+inline arbpp::arb max_value<arbpp::arb>(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(arbpp::arb))
+{
+	return arbpp::arb::max_value();
+}
+template<>
+inline arbpp::arb min_value<arbpp::arb>(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(arbpp::arb))
+{
+	return arbpp::arb::min_value();
+}
+
 }
 
 }

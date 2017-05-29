@@ -284,6 +284,13 @@ void arbpp_test_atan()
 	std::cout << std::endl;
 }
 
+void arbpp_test_boostmathtools()
+{
+	std::cout << "digits():\t" << boost::math::tools::digits<arbpp::arb>() << std::endl;
+	std::cout << "min_value():\t" << boost::math::tools::min_value<arbpp::arb>() << std::endl;
+	std::cout << "max_value():\t" << boost::math::tools::max_value<arbpp::arb>() << std::endl;
+}
+
 void arbpp_add_test()
 {
 	//arbpp_test_eq();
@@ -302,8 +309,9 @@ void arbpp_add_test()
 	//arbpp_test_sin();
 	//arbpp_test_asin();
 	//arbpp_test_acos();
-	arbpp_test_tan();
-	arbpp_test_atan();
+	//arbpp_test_tan();
+	//arbpp_test_atan();
+	arbpp_test_boostmathtools();
 }
 
 int main()
