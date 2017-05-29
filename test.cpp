@@ -231,6 +231,28 @@ void arbpp_test_log()
 	std::cout << std::endl;
 }
 
+void arbpp_test_sin()	// cos mar meg volt irva
+{
+	arbpp::arb A(0);
+	arbpp::arb B(1);
+	arbpp::arb C(asin(arbpp::arb(1)));
+	std::cout << "sin(" << A << ") : " << sin(A) << std::endl;
+	std::cout << "sin(" << B << ") : " << sin(B) << std::endl;
+	std::cout << "sin(" << C << ") : " << sin(C) << std::endl;
+	std::cout << std::endl;
+}
+
+void arbpp_test_asin()
+{
+	arbpp::arb A(0);
+	arbpp::arb B(0.5);
+	arbpp::arb C(1);
+	std::cout << "asin(" << A << ") : " << asin(A) << std::endl;
+	std::cout << "asin(" << B << ") : " << asin(B) << std::endl;
+	std::cout << "asin(" << C << ") : " << asin(C) << std::endl;
+	std::cout << std::endl;
+}
+
 void arbpp_add_test()
 {
 	//arbpp_test_eq();
@@ -244,8 +266,10 @@ void arbpp_add_test()
 	//arbpp_test_floor()
 	//arbpp_test_exp();
 	//arbpp_test_pow();
-	arbpp_test_sqrt();
-	arbpp_test_log();
+	//arbpp_test_sqrt();
+	//arbpp_test_log();
+	arbpp_test_sin();
+	arbpp_test_asin();
 }
 
 int main()
