@@ -209,6 +209,28 @@ void arbpp_test_pow()
 	std::cout << std::endl;
 }
 
+void arbpp_test_sqrt()
+{
+	arbpp::arb A(1);
+	arbpp::arb B(4);
+	arbpp::arb C(10);
+	std::cout << "sqrt(" << A << ") : " << sqrt(A) << std::endl;
+	std::cout << "sqrt(" << B << ") : " << sqrt(B) << std::endl;
+	std::cout << "sqrt(" << C << ") : " << sqrt(C) << std::endl;
+	std::cout << std::endl;
+}
+
+void arbpp_test_log()
+{
+	arbpp::arb A(1);
+	arbpp::arb B(exp(arbpp::arb(1)));
+	arbpp::arb C(10);
+	std::cout << "log(" << A << ") : " << log(A) << std::endl;
+	std::cout << "log(" << B << ") : " << log(B) << std::endl;
+	std::cout << "log(" << C << ") : " << log(C) << std::endl;
+	std::cout << std::endl;
+}
+
 void arbpp_add_test()
 {
 	//arbpp_test_eq();
@@ -220,8 +242,10 @@ void arbpp_add_test()
 	//arbpp_test_abs();
 	//arbpp_test_ceil();
 	//arbpp_test_floor()
-	arbpp_test_exp();
-	arbpp_test_pow();
+	//arbpp_test_exp();
+	//arbpp_test_pow();
+	arbpp_test_sqrt();
+	arbpp_test_log();
 }
 
 int main()

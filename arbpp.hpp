@@ -1493,6 +1493,22 @@ class arb: private detail::base_arb<>
 			return retval;
 		}
 		
+		arb sqrt() const
+		{
+			arb retval;
+			::arb_sqrt(&retval.m_arb, &m_arb, m_prec);
+			retval.m_prec = m_prec;
+			return retval;
+		}
+		
+		arb log() const
+		{
+			arb retval;
+			::arb_log(&retval.m_arb, &m_arb, m_prec);
+			retval.m_prec = m_prec;
+			return retval;
+		}
+		
     private:
         ::arb_struct    m_arb;
         long            m_prec;
@@ -1546,6 +1562,16 @@ inline arb exp(const arb &a)
 inline arb pow(const arb &a, const arb &b)
 {
 	return a.pow(b);
+}
+
+inline arb sqrt(const arb &a)
+{
+	return a.sqrt();
+}
+
+inline arb log(const arb &a)
+{
+	return a.log();
 }
 
 /// Literal namespace.
