@@ -17,6 +17,8 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with Arbpp.  If not, see <http://www.gnu.org/licenses/>.        *
  ***************************************************************************/
+ 
+ // original source: https://github.com/bluescarni/arbpp
 
 #ifndef ARBPP_ARBPP_HPP
 #define ARBPP_ARBPP_HPP
@@ -622,6 +624,50 @@ class arb: private detail::base_arb<>
             }
             m_prec = prec;
         }
+		
+		// LB additions
+		// equality, for operator==
+		static bool equality(const arb &a, const arb &b)
+        {
+			return ::arb_eq(&a.m_arb, &b.m_arb);
+        }
+        template <typename T, typename std::enable_if<is_arb_int<T>::value,int>::type = 0>
+        static bool equality(const arb &a, const T &n)
+        {
+            arb b(n);
+            return equality(a, b);
+        }
+        template <typename T, typename std::enable_if<is_arb_int<T>::value,int>::type = 0>
+        static bool equality(const T &n, const arb &a)
+        {
+            arb b(n);
+            return equality(a, b);
+        }
+        template <typename T, typename std::enable_if<is_arb_uint<T>::value,int>::type = 0>
+        static bool equality(const arb &a, const T &n)
+        {
+            arb b(n);
+            return equality(a, b);
+        }
+        template <typename T, typename std::enable_if<is_arb_uint<T>::value,int>::type = 0>
+        static bool equality(const T &n, const arb &a)
+        {
+            arb b(n);
+            return equality(a, b);
+        }
+        template <typename T, typename std::enable_if<is_arb_float<T>::value,int>::type = 0>
+        static bool equality(const arb &a, const T &x)
+        {
+            arb b(x);
+            return equality(a, b);
+        }
+        template <typename T, typename std::enable_if<is_arb_float<T>::value,int>::type = 0>
+        static bool equality(const T &x, const arb &a)
+        {
+            arb b(x);
+            return equality(a, b);
+        }
+		
         // Enabler for the generic ctor.
         template <typename T>
         using generic_enabler = typename std::enable_if<is_interoperable<T>::value,int>::type;
@@ -1157,6 +1203,16 @@ class arb: private detail::base_arb<>
             retval.m_prec = m_prec;
             return retval;
         }
+		
+		// additions for Boost compatibility
+		// based on the requirements at: http://www.boost.org/doc/libs/1_63_0/libs/math/doc/html/math_toolkit/real_concepts.html
+		
+		template <typename T, typename U>
+        friend auto operator==(const T &a, const U &b) -> decltype(arb::equality(a,b))
+        {
+            return equality(a, b);
+        }
+		
     private:
         ::arb_struct    m_arb;
         long            m_prec;
