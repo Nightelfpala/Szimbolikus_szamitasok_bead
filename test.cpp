@@ -284,11 +284,21 @@ void arbpp_test_atan()
 	std::cout << std::endl;
 }
 
+void arbpp_test_ldexp()
+{
+	arbpp::arb A(2);
+	arbpp::arb B(3);
+	std::cout << "ldexp(" << A << ", 3) : " << ldexp(A, 3) << std::endl;
+	std::cout << "ldexp(" << B << ", -2) : " << ldexp(B, -2) << std::endl;
+	std::cout << std::endl;
+}
+
 void arbpp_test_boostmathtools()
 {
 	std::cout << "digits():\t" << boost::math::tools::digits<arbpp::arb>() << std::endl;
 	std::cout << "min_value():\t" << boost::math::tools::min_value<arbpp::arb>() << std::endl;
 	std::cout << "max_value():\t" << boost::math::tools::max_value<arbpp::arb>() << std::endl;
+	std::cout << "epsilon():\t" << boost::math::tools::epsilon<arbpp::arb>() << std::endl;
 }
 
 void arbpp_add_test()
@@ -311,6 +321,7 @@ void arbpp_add_test()
 	//arbpp_test_acos();
 	//arbpp_test_tan();
 	//arbpp_test_atan();
+	arbpp_test_ldexp();
 	arbpp_test_boostmathtools();
 }
 

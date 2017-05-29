@@ -1549,6 +1549,14 @@ class arb: private detail::base_arb<>
 			return retval;
 		}
 		
+		arb ldexp(int ex) const	// gepi epszilon szamitasahoz
+		{
+			arb retval;
+			retval.m_prec = m_prec;
+			retval = (*this) * arb(2).pow(arb(ex));
+			return retval;
+		}
+		
 		static arb max_value()
 		{
 			static bool done = false;
@@ -1661,6 +1669,11 @@ inline arb atan(const arb &a)
 	return a.atan();
 }
 
+inline arb ldexp(const arb &a, int n)
+{
+	return a.ldexp(n);
+}
+
 /// Literal namespace.
 inline namespace literals
 {
@@ -1699,14 +1712,20 @@ inline int digits<arbpp::arb>(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(arbpp::arb)
 	return arbpp::arb::get_default_precision();
 }
 template<>
+inline arbpp::arb min_value<arbpp::arb>(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(arbpp::arb))
+{
+	return arbpp::arb::min_value();
+}
+template<>
 inline arbpp::arb max_value<arbpp::arb>(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(arbpp::arb))
 {
 	return arbpp::arb::max_value();
 }
 template<>
-inline arbpp::arb min_value<arbpp::arb>(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(arbpp::arb))
+inline arbpp::arb epsilon<arbpp::arb>(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(arbpp::arb))
 {
-	return arbpp::arb::min_value();
+	arbpp::arb A(1);
+	return A.ldexp(1 - boost::math::tools::digits<arbpp::arb>());
 }
 
 }
