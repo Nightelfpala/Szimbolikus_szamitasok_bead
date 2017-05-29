@@ -794,6 +794,48 @@ class arb: private detail::base_arb<>
             return greater_equal(b, a);
         }
 		
+		// less than, operator <
+		static bool less_than(const arb &a, const arb &b)
+        {
+			return ::arb_lt(&a.m_arb, &b.m_arb);
+        }
+        template <typename T, typename std::enable_if<is_arb_int<T>::value,int>::type = 0>
+        static bool less_than(const arb &a, const T &n)
+        {
+            arb b(n);
+            return less_than(a, b);
+        }
+        template <typename T, typename std::enable_if<is_arb_int<T>::value,int>::type = 0>
+        static bool less_than(const T &n, const arb &a)
+        {
+            arb b(n);
+            return less_than(b, a);
+        }
+        template <typename T, typename std::enable_if<is_arb_uint<T>::value,int>::type = 0>
+        static bool less_than(const arb &a, const T &n)
+        {
+            arb b(n);
+            return less_than(a, b);
+        }
+        template <typename T, typename std::enable_if<is_arb_uint<T>::value,int>::type = 0>
+        static bool less_than(const T &n, const arb &a)
+        {
+            arb b(n);
+            return less_than(b, a);
+        }
+        template <typename T, typename std::enable_if<is_arb_float<T>::value,int>::type = 0>
+        static bool less_than(const arb &a, const T &x)
+        {
+            arb b(x);
+            return less_than(a, b);
+        }
+        template <typename T, typename std::enable_if<is_arb_float<T>::value,int>::type = 0>
+        static bool less_than(const T &x, const arb &a)
+        {
+            arb b(x);
+            return less_than(b, a);
+        }
+		
         // Enabler for the generic ctor.
         template <typename T>
         using generic_enabler = typename std::enable_if<is_interoperable<T>::value,int>::type;
@@ -1355,6 +1397,12 @@ class arb: private detail::base_arb<>
         friend auto operator>=(const T &a, const U &b) -> decltype(arb::greater_equal(a,b))
         {
             return greater_equal(a, b);
+        }
+		
+		template <typename T, typename U>
+        friend auto operator<(const T &a, const U &b) -> decltype(arb::less_than(a,b))
+        {
+            return less_than(a, b);
         }
 		
     private:
