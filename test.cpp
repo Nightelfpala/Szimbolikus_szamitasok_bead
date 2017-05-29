@@ -253,6 +253,37 @@ void arbpp_test_asin()
 	std::cout << std::endl;
 }
 
+void arbpp_test_acos()	// boost nem irja hogy kene, de azert implementalom
+{
+	arbpp::arb A(0);
+	arbpp::arb B(0.5);
+	arbpp::arb C(1);
+	std::cout << "acos(" << A << ") : " << acos(A) << std::endl;
+	std::cout << "acos(" << B << ") : " << acos(B) << std::endl;
+	std::cout << "acos(" << C << ") : " << acos(C) << std::endl;
+	std::cout << std::endl;
+}
+
+void arbpp_test_tan()
+{
+	arbpp::arb A(0);
+	arbpp::arb B(1);
+	std::cout << "tan(" << A << ") : " << tan(A) << std::endl;
+	std::cout << "tan(" << B << ") : " << tan(B) << std::endl;
+	std::cout << std::endl;
+}
+
+void arbpp_test_atan()
+{
+	arbpp::arb A(0);
+	arbpp::arb B(1);
+	arbpp::arb C(tan(arbpp::arb(0.5d)));
+	std::cout << "atan(" << A << ") : " << atan(A) << std::endl;
+	std::cout << "atan(" << B << ") : " << atan(B) << std::endl;
+	std::cout << "atan(" << C << ") : " << atan(C) << std::endl;
+	std::cout << std::endl;
+}
+
 void arbpp_add_test()
 {
 	//arbpp_test_eq();
@@ -268,8 +299,11 @@ void arbpp_add_test()
 	//arbpp_test_pow();
 	//arbpp_test_sqrt();
 	//arbpp_test_log();
-	arbpp_test_sin();
-	arbpp_test_asin();
+	//arbpp_test_sin();
+	//arbpp_test_asin();
+	//arbpp_test_acos();
+	arbpp_test_tan();
+	arbpp_test_atan();
 }
 
 int main()

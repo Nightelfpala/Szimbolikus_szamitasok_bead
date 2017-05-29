@@ -1525,6 +1525,30 @@ class arb: private detail::base_arb<>
 			return retval;
 		}
 		
+		arb acos() const
+		{
+			arb retval;
+			::arb_acos(&retval.m_arb, &m_arb, m_prec);
+			retval.m_prec = m_prec;
+			return retval;
+		}
+		
+		arb tan() const
+		{
+			arb retval;
+			::arb_tan(&retval.m_arb, &m_arb, m_prec);
+			retval.m_prec = m_prec;
+			return retval;
+		}
+		
+		arb atan() const
+		{
+			arb retval;
+			::arb_atan(&retval.m_arb, &m_arb, m_prec);
+			retval.m_prec = m_prec;
+			return retval;
+		}
+		
     private:
         ::arb_struct    m_arb;
         long            m_prec;
@@ -1598,6 +1622,21 @@ inline arb sin(const arb &a)
 inline arb asin(const arb &a)
 {
 	return a.asin();
+}
+
+inline arb acos(const arb &a)
+{
+	return a.acos();
+}
+
+inline arb tan(const arb &a)
+{
+	return a.tan();
+}
+
+inline arb atan(const arb &a)
+{
+	return a.atan();
 }
 
 /// Literal namespace.
