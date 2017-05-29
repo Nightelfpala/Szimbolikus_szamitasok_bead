@@ -1699,6 +1699,7 @@ inline arb operator "" _arb(const char *s)
 }
 
 // LB additions
+#include <boost/math/constants/constants.hpp>	// egy boost libet kell includeolni hogy a megfelelo makrokat megkapja
 namespace boost
 {
 namespace math
