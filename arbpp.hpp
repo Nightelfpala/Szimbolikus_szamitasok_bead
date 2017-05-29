@@ -1184,6 +1184,15 @@ class arb: private detail::base_arb<>
             }
             return os;
         }
+		
+		// LB addition
+		friend std::istream &operator>>(std::istream &is, arb &a)	// TODO std::invalid_argument rossz konverzio eseten, a kivant mukodesre lecserelni
+		{
+			std::string ss;
+			is >> ss;
+			arb b(ss);
+			a = b;
+		}
         /// Midpoint getter.
         /**
          * @return the midpoint of \p this, rounded to \p double in an unspecified
@@ -1557,7 +1566,7 @@ class arb: private detail::base_arb<>
 			return retval;
 		}
 		
-		static arb max_value()
+		static arb plus_inf()	// plusz vegtelen
 		{
 			static bool done = false;
 			static arbpp::arb retval;
@@ -1568,7 +1577,7 @@ class arb: private detail::base_arb<>
 			return retval;
 		}
 		
-		static arb min_value()
+		static arb neg_inf()	// -vegtelen
 		{
 			static bool done = false;
 			static arbpp::arb retval;
@@ -1579,7 +1588,7 @@ class arb: private detail::base_arb<>
 			return retval;
 		}
 		
-		static arb NaN_value()
+		static arb NaN_value()	// NaN
 		{
 			static bool done = false;
 			static arbpp::arb retval;
@@ -1726,12 +1735,12 @@ inline int digits<arbpp::arb>(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(arbpp::arb)
 template<>
 inline arbpp::arb min_value<arbpp::arb>(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(arbpp::arb))
 {
-	return arbpp::arb::min_value();
+	return arbpp::arb::neg_inf();
 }
 template<>
 inline arbpp::arb max_value<arbpp::arb>(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(arbpp::arb))
 {
-	return arbpp::arb::max_value();
+	return arbpp::arb::plus_inf();
 }
 template<>
 inline arbpp::arb epsilon<arbpp::arb>(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(arbpp::arb))	// TODO ez megint static (default_precision-tol fugg), de tetsz pontossagu tipus -> valtozhat

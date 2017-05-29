@@ -53,7 +53,7 @@ void arbpp_demo_modf()
 	std::cout << std::endl;
 }
 
-//#include <boost\math\special_functions\fpclassify.hpp>	// std::numeric_limits kell, nem tudtam beincludeolni
+//#include <boost\math\special_functions\fpclassify.hpp>	// nem tudtam beincludeolni, feltehetoleg std::numeric_limits kell
 	// vegesseg, NaN-sag, denormalizaltsag ellenorzesek, ezek alapjan osztalyozas
 
 #include <boost/math/special_functions/sign.hpp>
@@ -75,15 +75,36 @@ void arbpp_demo_sign()
 }
 
 //#include <boost\math\special_functions\nonfinite_num_facets.hpp>	// nem tudtam beincludeolni, feltehetoleg std::numeric_limits kell
+	// string konverzio a vegtelen es NaN ertekekhez (kiiras es beolvasas) - elvileg a wrapper mar ezeket tudja operator<< -vel
+void arbpp_demo_io()
+{
+	arbpp::arb A(2.0);
+	arbpp::arb inf = arbpp::arb::plus_inf();
+	arbpp::arb minf = arbpp::arb::neg_inf();
+	
+	std::cout << A << "\t" << inf << "\t" << minf << std::endl;
+	
+	std::cout << "Irj be egy szamot!" << std::endl;
+	arbpp::arb B;
+	std::cin >> B;	// tesztelve: +-inf, NaN, egesz, tizedes tort, tizedes tort e10 hatvannyal
+		// TODO egyelore std::invalid_argument-et dob, ha a konverzio nem mukodik, kivant mukodesre le lehetne cserelni
+	std::cout << B << std::endl;
+}
 
-
+#include <boost/math/constants/constants.hpp>
+void arbpp_demo_const()
+{
+	//std::cout << "pi:\t" << boost::math::constants::pi<arbpp::arb>() << std::endl;
+}
 
 int main()
 {
 	//arbpp_demo_boostround();
 	//arbpp_demo_boosttrunc();
 	//arbpp_demo_modf();
-	arbpp_demo_sign();
+	//arbpp_demo_sign();
+	arbpp_demo_io();
+	arbpp_demo_const();
 	
 	return 0;
 }
