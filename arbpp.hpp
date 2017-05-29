@@ -1469,6 +1469,14 @@ class arb: private detail::base_arb<>
 			return retval;
 		}
 		
+		arb floor() const
+		{
+			arb retval;
+			::arb_floor(&retval.m_arb, &m_arb, m_prec);
+			retval.m_prec = m_prec;
+			return retval;
+		}
+		
     private:
         ::arb_struct    m_arb;
         long            m_prec;
@@ -1507,6 +1515,11 @@ inline arb abs(const arb &a)
 inline arb ceil(const arb &a)
 {
 	return a.ceil();
+}
+
+inline arb floor(const arb &a)
+{
+	return a.floor();
 }
 
 /// Literal namespace.

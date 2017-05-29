@@ -164,6 +164,20 @@ void arbpp_test_ceil()
 	std::cout << std::endl;
 }
 
+void arbpp_test_floor()
+{
+	arbpp::arb A(1);
+	arbpp::arb B(-1);
+	std::cout << "floor(" << A << ") : " << floor(A) << std::endl;
+	std::cout << "floor(" << B << ") : " << floor(B) << std::endl;
+	
+	A = 2.5d;
+	B = -2.5d;
+	std::cout << "floor(" << A << ") : " << floor(A) << std::endl;
+	std::cout << "floor(" << B << ") : " << floor(B) << std::endl;
+	std::cout << std::endl;
+}
+
 void arbpp_add_test()
 {
 	//arbpp_test_eq();
@@ -172,8 +186,9 @@ void arbpp_add_test()
 	//arbpp_test_ge();
 	//arbpp_test_lt();
 	//arbpp_test_gt();
-	arbpp_test_abs();
+	//arbpp_test_abs();
 	arbpp_test_ceil();
+	arbpp_test_floor();
 }
 
 int main()
