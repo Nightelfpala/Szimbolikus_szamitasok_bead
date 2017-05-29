@@ -1414,7 +1414,7 @@ class arb: private detail::base_arb<>
             return retval;
         }
 		
-		// additions for Boost compatibility
+		// LB additions for Boost compatibility
 		// based on the requirements at: http://www.boost.org/doc/libs/1_63_0/libs/math/doc/html/math_toolkit/real_concepts.html
 		
 		template <typename T, typename U>
@@ -1453,6 +1453,14 @@ class arb: private detail::base_arb<>
             return greater_than(a, b);
         }
 		
+		arb abs() const
+		{
+			arb retval;
+			::arb_abs(&retval.m_arb, &m_arb);
+			retval.m_prec = m_prec;
+			return retval;
+		}
+		
     private:
         ::arb_struct    m_arb;
         long            m_prec;
@@ -1479,6 +1487,13 @@ inline arb cos(const arb &a)
 inline void swap(arb &a0, arb &a1) noexcept
 {
     a0.swap(a1);
+}
+
+// LB additions
+
+inline arb abs(const arb &a)
+{
+	return a.abs();
 }
 
 /// Literal namespace.

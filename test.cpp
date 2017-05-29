@@ -136,14 +136,29 @@ void arbpp_test_gt()
 	std::cout << std::endl;
 }
 
+void arbpp_test_abs()
+{
+	arbpp::arb A(1);
+	arbpp::arb B(-1);
+	
+	std::cout << "abs(" << A << ") : " << abs(A) << std::endl;
+	std::cout << "abs(" << B << ") : " << abs(B) << std::endl;
+	
+	A = 2.5d;
+	B = -2.5d;
+	std::cout << "abs(" << A << ") : " << abs(A) << std::endl;
+	std::cout << "abs(" << B << ") : " << abs(B) << std::endl;
+}
+
 void arbpp_add_test()
 {
 	//arbpp_test_eq();
 	//arbpp_test_ineq();
 	//arbpp_test_le();
 	//arbpp_test_ge();
-	arbpp_test_lt();
-	arbpp_test_gt();
+	//arbpp_test_lt();
+	//arbpp_test_gt();
+	arbpp_test_abs();
 }
 
 int main()
