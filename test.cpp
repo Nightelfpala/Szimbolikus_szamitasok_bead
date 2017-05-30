@@ -53,8 +53,29 @@ void arbpp_demo_modf()
 	std::cout << std::endl;
 }
 
-//#include <boost/math/special_functions/fpclassify.hpp>	// nem tudtam beincludeolni, feltehetoleg std::numeric_limits kell
+#include <boost/math/special_functions/fpclassify.hpp>	// std::numeric_limits kell hogy jol mukodjon
+void arbpp_demo_fpclass()
+{
+	arbpp::arb A(2);
+	arbpp::arb B(arbpp::arb::pos_inf());
+	
+	int cl = boost::math::fpclassify(A);
+	std::string str = (cl == FP_ZERO ? "FP_ZERO"
+		: cl == FP_NORMAL ? "FP_NORMAL"
+		: cl == FP_INFINITE ? "FP_INFINITE"
+		: cl == FP_NAN ? "FP_NAN"
+		: cl == FP_SUBNORMAL ? "FP_SUBNORMAL"
+		: "not found");
+	
 	// vegesseg, NaN-sag, denormalizaltsag ellenorzesek, ezek alapjan osztalyozas
+	std::cout << "fpclassify(" << A << ") : " << str << std::endl;
+	std::cout << "isfinite(" << A << ") : " << boost::math::isfinite(A) << std::endl;
+	std::cout << "isinf(" << A << ") : " << boost::math::isinf(A) << std::endl;
+	std::cout << "isinf(" << B << ") : " << boost::math::isinf(B) << std::endl;	// nem jo, TODO numeric_limits
+	std::cout << "isnan(" << A << ") : " << boost::math::isnan(A) << std::endl;
+	std::cout << "isnormal(" << A << ") : " << boost::math::isnormal(A) << std::endl;
+	std::cout << std::endl;
+}
 
 #include <boost/math/special_functions/sign.hpp>
 void arbpp_demo_sign()
@@ -74,8 +95,8 @@ void arbpp_demo_sign()
 	std::cout << "copysign(" << A << ", " << C <<") : " << boost::math::copysign(A, C) << std::endl;
 }
 
-//#include <boost/math/special_functions/nonfinite_num_facets.hpp>	// nem tudtam beincludeolni, feltehetoleg std::numeric_limits kell
-	// string konverzio es IO a vegtelen es NaN ertekekhez (kiiras es beolvasas) - a wrapper mar ezeket tudja operatorokkal
+//#include <boost/math/special_functions/nonfinite_num_facets.hpp>	// feltehetoleg std::numeric_limits kell
+	// string konverzio es IO a vegtelen es NaN ertekekhez (kiiras es beolvasas) - a wrapper mar ezeket tudja operatorokkal, bar ez nem standardizalt, de a wrapper kiegeszitheto
 void arbpp_demo_io()
 {
 	arbpp::arb A(2.0);
@@ -262,6 +283,9 @@ void arbpp_demo_minimize()
 #include <boost/math/special_functions/laguerre.hpp>
 #include <boost/math/special_functions/hermite.hpp>
 #include <boost/math/special_functions/spherical_harmonic.hpp>
+#include <boost/math/special_functions/bessel.hpp>
+#include <boost/math/special_functions/hankel.hpp>	// a header nev nincs a dokumentacioban benne
+#include <boost/math/special_functions/airy.hpp>
 namespace special_functions
 {
 	void arbpp_demo_gamma()
@@ -296,7 +320,7 @@ namespace special_functions
 			// a dokumentacio nem ad rendes kepletet, csak ezt a ket peldat
 		
 		std::cout << "legendre_p(" << n << ", " << A << ") : " << boost::math::legendre_p(n, A) << std::endl;
-		//std::cout << "legendre_p(" << n << ", " << m << ", " << A << ") : " << boost::math::legendre_p(n, m, A) << std::endl;	// TODO invalid static_cast to int
+		//std::cout << "legendre_p(" << n << ", " << m << ", " << A << ") : " << boost::math::legendre_p(n, m, A) << std::endl;	// TODO static_cast int
 		std::cout << "legendre_q(" << 0 << ", " << A << ") : " << boost::math::legendre_q(0, A) << std::endl;
 		std::cout << "legendre_q(" << n << ", " << A << ") : " << boost::math::legendre_q(n, A) << std::endl;
 		std::cout << std::endl;
@@ -337,7 +361,50 @@ namespace special_functions
 		// spherical_harmonic(n, m, theta, phi) = sqrt(((2 * n + 1) * (n - m)!) / ((4 * pi) * (n + m)!)) * Pmn(cos theta) * e^(i * m * phi)
 			// ez std::complex<type>-ot ad vissza, _r es _i valosakat
 		
-		//std::cout << "spherical_harmonic_r(" << n << ", " << m << ", " << A << ", " << B << ") : " << boost::math::spherical_harmonic_r(n, m, A, B) << std::endl;	// TODO static cast
+		//std::cout << "spherical_harmonic_r(" << n << ", " << m << ", " << A << ", " << B << ") : " << boost::math::spherical_harmonic_r(n, m, A, B) << std::endl;	// TODO static_cast int
+		std::cout << std::endl;
+	}
+	
+	void arbpp_demo_bessel()	// tgamma()-ra epul
+	{
+		arbpp::arb A(2);
+		arbpp::arb B(3.1);
+		
+		// cyl_bessel_j(v, x) = (x / 2)^v * sum(k=0..inf, (-x^2 / 4)^k / (k! * gamma(v + k + 1)))
+		// cyl_neumann(v, x) = (cyl_bessel_j(v, x) * cos(v * pi) - cyl_bessel_j(-v, x)) / sin(v * pi)
+		
+		//std::cout << "cyl_bessel_j(" << A << ", " << B << ") : " << boost::math::cyl_bessel_j(A, B) << std::endl;	// TODO static_cast int
+		//std::cout << "cyl_neumann(" << A << ", " << B << ") : " << boost::math::cyl_neumann(A, B) << std::endl;	// TODO static_cast int
+		std::cout << std::endl;
+	}
+	
+	void arbpp_demo_hankel()	// cyl_bessel_j()-re epul
+	{
+		arbpp::arb A(2);
+		arbpp::arb B(3.1);
+		
+		// cyl_hankel_1(v, x) = cyl_bessel_j(v, x) + i * cyl_neumann(v, x)
+		// cyl_hankel_2(v, x) = cyl_bessel_j(v, x) - i * cyl_neumann(v, x)
+		// sph_hankel_1(v, x) = sqrt(pi/2) * 1/sqrt(x) * cyl_hankel_1(v + 1/2, x)
+		// sph_hankel_2(v, x) = sqrt(pi/2) * 1/sqrt(x) * cyl_hankel_2(v + 1/2, x)
+			// std::complex<type>-ot adnak vissza
+		
+		//std::cout << "cyl_hankel_1(" << A << ", " << B << ") : " << boost::math::cyl_hankel_1(A, B) << std::endl;	// TODO static_cast int
+		//std::cout << "cyl_hankel_2(" << A << ", " << B << ") : " << boost::math::cyl_hankel_2(A, B) << std::endl;	// TODO static_cast int
+		std::cout << std::endl;
+	}
+	
+	void arbpp_demo_airy()	// cyl_bessel_j()-re es cyl_bessel_k()-ra epul
+	{
+		arbpp::arb A(0);
+		
+		// (d^2 / dz^2)w = z * w diffegyenlet megoldasai es a derivaltjaik
+			// a harmadik megoldas airy_ai(z * exp(+- 2 * pi * i / 3))
+		
+		//std::cout << "airy_ai(" << A << ") : " << boost::math::airy_ai(A) << std::endl;	// TODO numeric_limits
+		//std::cout << "airy_bi(" << A << ") : " << boost::math::airy_bi(A) << std::endl;	// TODO numeric_limits & static_cast int
+		//std::cout << "airy_ai_prime(" << A << ") : " << boost::math::airy_ai_prime(A) << std::endl;	// TODO numeric_limits
+		//std::cout << "airy_bi_prime(" << A << ") : " << boost::math::airy_bi_prime(A) << std::endl;	// TODO numeric_limits & static_cast int
 		std::cout << std::endl;
 	}
 }
@@ -347,6 +414,7 @@ int main()
 	//arbpp_demo_boostround();
 	//arbpp_demo_boosttrunc();
 	//arbpp_demo_modf();
+	//arbpp_demo_fpclass();	// unfinished, compiles & runs
 	//arbpp_demo_sign();
 	//arbpp_demo_io();
 	//arbpp_demo_const();	// unfinished
@@ -361,6 +429,9 @@ int main()
 	//special_functions::arbpp_demo_laguerre();
 	//special_functions::arbpp_demo_hermite();
 	//special_functions::arbpp_demo_spherical_harmonic();	// unfinished
+	//special_functions::arbpp_demo_bessel();	// unfinished
+	//special_functions::arbpp_demo_hankel();	// unfinished
+	//special_functions::arbpp_demo_airy();	// unfinished
 	
 	return 0;
 }
