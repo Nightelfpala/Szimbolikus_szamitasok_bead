@@ -259,6 +259,9 @@ void arbpp_demo_minimize()
 #include <boost/math/special_functions/gamma.hpp>
 #include <boost/math/special_functions/factorials.hpp>
 #include <boost/math/special_functions/legendre.hpp>
+#include <boost/math/special_functions/laguerre.hpp>
+#include <boost/math/special_functions/hermite.hpp>
+#include <boost/math/special_functions/spherical_harmonic.hpp>
 namespace special_functions
 {
 	void arbpp_demo_gamma()
@@ -298,6 +301,45 @@ namespace special_functions
 		std::cout << "legendre_q(" << n << ", " << A << ") : " << boost::math::legendre_q(n, A) << std::endl;
 		std::cout << std::endl;
 	}
+	
+	void arbpp_demo_laguerre()
+	{
+		arbpp::arb A(5.3);
+		int n = 3;
+		int m = 2;
+		
+		// laguerre(n, x) = e^x / n! * (d^n / dx^n) (x^n * e^-x)
+		// laguerre(n, m, x) = (-1)^m * (d^m / dx^m) (laguerre(n + m, x))
+		
+		std::cout << "laguerre(" << n << ", " << A << ") : " << boost::math::laguerre(n, A) << std::endl;
+		std::cout << "laguerre(" << n << ", " << m << ", " << A << ") : " << boost::math::laguerre(n, m, A) << std::endl;
+		std::cout << std::endl;
+	}
+	
+	void arbpp_demo_hermite()
+	{
+		arbpp::arb A(0.8);
+		int n = 3;
+		
+		// hermite(n, A) = (-1)^n * e^(x^2) * (d^2 / dx^2) (e^(-x^2))
+		
+		std::cout << "hermite(" << n << ", " << A << ") : " << boost::math::hermite(n, A) << std::endl;
+		std::cout << std::endl;
+	}
+	
+	void arbpp_demo_spherical_harmonic()
+	{
+		arbpp::arb A(1.2);	// [0, pi]
+		arbpp::arb B(-0.6);	// [0, 2pi)
+		int n = 3;
+		int m = 2;
+		
+		// spherical_harmonic(n, m, theta, phi) = sqrt(((2 * n + 1) * (n - m)!) / ((4 * pi) * (n + m)!)) * Pmn(cos theta) * e^(i * m * phi)
+			// ez std::complex<type>-ot ad vissza, _r es _i valosakat
+		
+		//std::cout << "spherical_harmonic_r(" << n << ", " << m << ", " << A << ", " << B << ") : " << boost::math::spherical_harmonic_r(n, m, A, B) << std::endl;	// TODO static cast
+		std::cout << std::endl;
+	}
 }
 
 int main()
@@ -307,15 +349,18 @@ int main()
 	//arbpp_demo_modf();
 	//arbpp_demo_sign();
 	//arbpp_demo_io();
-	//arbpp_demo_const();
-	//arbpp_demo_complex();
-	//arbpp_demo_gcd_lcm();
+	//arbpp_demo_const();	// unfinished
+	//arbpp_demo_complex();	// partially unfinished
+	//arbpp_demo_gcd_lcm();	// unfinished
 	//deriv_roots::arbpp_demo_roots();
 	//noderiv_roots::arbpp_demo_roots();
 	//minimize_func::arbpp_demo_minimize();
-	//special_functions::arbpp_demo_gamma();
-	//special_functions::arbpp_demo_factorial();
-	special_functions::arbpp_demo_legendre();
+	//special_functions::arbpp_demo_gamma();	// unfinished
+	//special_functions::arbpp_demo_factorial();	// unfinished
+	//special_functions::arbpp_demo_legendre();	// partially unfinished
+	//special_functions::arbpp_demo_laguerre();
+	//special_functions::arbpp_demo_hermite();
+	//special_functions::arbpp_demo_spherical_harmonic();	// unfinished
 	
 	return 0;
 }
