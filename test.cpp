@@ -93,17 +93,20 @@ void arbpp_demo_io()
 
 /* //TODO - causes segfault on specialization
 #include <boost/math/constants/constants.hpp>
+
 namespace boost{
 namespace math{
 namespace constants{
 template<> arbpp::arb half<arbpp::arb>() { return arbpp::arb("5.00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e-01"); }	// ezzel mukodik, de valoszinuleg ertelmetlenne teszi
 }}}
+
 void arbpp_demo_const()
 {
-	std::cout << "half:\t" << boost::math::constants::half<arbpp::arb>() << std::endl;
+	//std::cout << "half:\t" << boost::math::constants::half<arbpp::arb>() << std::endl;
 	//std::cout << "pi:\t" << boost::math::constants::pi<arbpp::arb>() << std::endl;
 }
 */
+
 
 //#include <boost/math/complex/asin.hpp>
 //#include <boost/math/complex/acos.hpp>
@@ -138,7 +141,7 @@ void arbpp_demo_gcd_lcm()
 	
 	// legkisebb kozos oszto, legnagyobb kozos tobbszoros
 		// TODO mukodeshez operator%= implementalasa
-		// vagy kell-e egyaltalan? vegulis az arb az lebegopontosan szamol, ez meg egeszekkel dolgozik
+		// vagy kell-e egyaltalan? vegulis az arb az lebegopontosan szamol, ez meg egeszekkel dolgozik - megbeszelesunk alapjan nem kell, mindenesetre benn hagyom
 	std::cout << "gcd(" << A << ", " << B << ") : " << boost::math::gcd(A, B) << std::endl;
 	std::cout << "lcm(" << A << ", " << B << ") : " << boost::math::lcm(A, B) << std::endl;
 	std::cout << std::endl;
@@ -253,6 +256,50 @@ void arbpp_demo_minimize()
 }
 }	// namespace minimize_func
 
+#include <boost/math/special_functions/gamma.hpp>
+#include <boost/math/special_functions/factorials.hpp>
+#include <boost/math/special_functions/legendre.hpp>
+namespace special_functions
+{
+	void arbpp_demo_gamma()
+	{
+		arbpp::arb A(4.2);
+		arbpp::arb B(5);
+		
+		//std::cout << boost::math::tgamma(A) << std::endl;	// TODO invalid static_cast from arbpp::arb to int
+		//std::cout << boost::math::tgamma(B) << std::endl;
+		std::cout << std::endl;
+	}
+	
+	void arbpp_demo_factorial()
+	{
+		arbpp::arb A(5);
+		
+		//std::cout << A << "! : " << boost::math::factorial<arbpp::arb>(5) << std::endl;	// TODO invalid static_cast to int
+		std::cout << std::endl;
+	}
+	
+	void arbpp_demo_legendre()
+	{
+		arbpp::arb A(0.5);	// abs(A) <= 1, kulonben domain_error
+		int n = 2;
+		int m = 3;
+		
+		// legendre_p(n, x) = 1 / (2^n * n!) * (d^l/dx^l)((x^2 - 1)^n)
+		// legendre_p(n, m, x) = (-1)^m * (1 - x^2)^(m/2) * (d^m/dx^m)legendre_p(n,x)
+		
+		// legendre_q(0, x) = 1/2 ln((1 + x) / (1 - x))
+		// legendre_q(1, x) = x/2 ln((1 + x) / (1 - x)) - 1
+			// a dokumentacio nem ad rendes kepletet, csak ezt a ket peldat
+		
+		std::cout << "legendre_p(" << n << ", " << A << ") : " << boost::math::legendre_p(n, A) << std::endl;
+		//std::cout << "legendre_p(" << n << ", " << m << ", " << A << ") : " << boost::math::legendre_p(n, m, A) << std::endl;	// TODO invalid static_cast to int
+		std::cout << "legendre_q(" << 0 << ", " << A << ") : " << boost::math::legendre_q(0, A) << std::endl;
+		std::cout << "legendre_q(" << n << ", " << A << ") : " << boost::math::legendre_q(n, A) << std::endl;
+		std::cout << std::endl;
+	}
+}
+
 int main()
 {
 	//arbpp_demo_boostround();
@@ -260,12 +307,15 @@ int main()
 	//arbpp_demo_modf();
 	//arbpp_demo_sign();
 	//arbpp_demo_io();
-	//arbpp_demo_const();	// TODO
+	//arbpp_demo_const();
 	//arbpp_demo_complex();
-	//arbpp_demo_gcd_lcm();	// TODO
+	//arbpp_demo_gcd_lcm();
 	//deriv_roots::arbpp_demo_roots();
 	//noderiv_roots::arbpp_demo_roots();
-	minimize_func::arbpp_demo_minimize();
+	//minimize_func::arbpp_demo_minimize();
+	//special_functions::arbpp_demo_gamma();
+	//special_functions::arbpp_demo_factorial();
+	special_functions::arbpp_demo_legendre();
 	
 	return 0;
 }
