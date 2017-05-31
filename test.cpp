@@ -587,9 +587,12 @@ namespace special_functions
 #include <boost/math/distributions/binomial.hpp>
 #include <boost/math/distributions/cauchy.hpp>
 #include <boost/math/distributions/chi_squared.hpp>
+#include <boost/math/distributions/exponential.hpp>
+#include <boost/math/distributions/extreme_value.hpp>	// a dokumentacioban extreme.hpp neven van, de azt nem talalta
 namespace distributions
 {
 	// itt a kiirasok tukrozni fogjak az eloszlas paramereterit, de a fvhivasok nem egyeznek meg azzal, amit kiirunk
+	// az elso peldat leszamitva csak az eloszlasfv, a surusegfv, a varhato ertek, a szoras es a kvantilis lesz tesztelve (illetve amelyik ertelmes az adott eloszlasra)
 	void normal()
 	{
 		boost::math::normal_distribution<arbpp::arb> A(1.5, 2);	// normal / Gauss-eloszlas
@@ -697,6 +700,39 @@ namespace distributions
 		//std::cout << "quantile(chi_squared_distribution<arbpp::arb>(" << v << ", 0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO numeric_limits & static_cast int
 		std::cout << std::endl;
 	}
+	
+	void exponential()
+	{
+		arbpp::arb lambda(1.5);	// lambda pozitiv, kulonben domain_error
+		boost::math::exponential_distribution<arbpp::arb> A(lambda);
+		arbpp::arb x(2.2);
+		
+		// surusegfv: f(x) = lambda * e^(-lambda * x)
+		
+		//std::cout << "cdf(exponential_distribution<arbpp::arb>(" << lambda << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;	// TODO numeric_limits
+		std::cout << "pdf(exponential_distribution<arbpp::arb>(" << lambda << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;
+		std::cout << "mean(exponential_distribution<arbpp::arb>(" << lambda << ") : " << boost::math::mean(A) << std::endl;
+		std::cout << "standard_deviation(exponential_distribution<arbpp::arb>(" << lambda << ") : " << boost::math::standard_deviation(A) << std::endl;
+		std::cout << "quantile(exponential_distribution<arbpp::arb>(" << lambda << "0.5) : " << boost::math::quantile(A, 0.5) << std::endl;
+		std::cout << std::endl;
+	}
+	
+	void extreme()
+	{
+		arbpp::arb a1(2);
+		arbpp::arb a2(1.3);	// a2 pozitiv, kulonben domain_error
+		boost::math::extreme_value_distribution<arbpp::arb> A(a1, a2);
+		arbpp::arb x(2.2);
+		
+		// f(x) = 1/a2 * e^(-(x - a1) / a2) * e^(-e^((x - a1) / a2))
+		
+		std::cout << "cdf(extreme_value_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;
+		std::cout << "pdf(extreme_value_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;
+		//std::cout << "mean(extreme_value_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::mean(A) << std::endl;	// TODO segfault
+		//std::cout << "standard_deviation(extreme_value_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::standard_deviation(A) << std::endl;	// TODO segfault
+		std::cout << "quantile(extreme_value_distribution<arbpp::arb>(" << a1 << ", " << a2 << "0.5) : " << boost::math::quantile(A, 0.5) << std::endl;
+		std::cout << std::endl;
+	}
 }
 
 int main()
@@ -739,7 +775,9 @@ int main()
 	//distributions::beta_distr();	// partially unfinished
 	//distributions::binomial_distr();	// partially unfinished
 	//distributions::cauchy_lorentz();	// unfinished
-	distributions::chi_sqr();	// partially unfinished
+	//distributions::chi_sqr();	// partially unfinished
+	//distributions::exponential();	// partially unfinished
+	//distributions::extreme();	// partially unfinished
 	
 	return 0;
 }
