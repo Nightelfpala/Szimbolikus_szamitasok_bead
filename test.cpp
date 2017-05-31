@@ -584,6 +584,9 @@ namespace special_functions
 #include <boost/math/distributions/normal.hpp>
 #include <boost/math/distributions/bernoulli.hpp>
 #include <boost/math/distributions/beta.hpp>
+#include <boost/math/distributions/binomial.hpp>
+#include <boost/math/distributions/cauchy.hpp>
+#include <boost/math/distributions/chi_squared.hpp>
 namespace distributions
 {
 	// itt a kiirasok tukrozni fogjak az eloszlas paramereterit, de a fvhivasok nem egyeznek meg azzal, amit kiirunk
@@ -637,7 +640,6 @@ namespace distributions
 		arbpp::arb a1(2);
 		arbpp::arb a2(3);
 		boost::math::beta_distribution<arbpp::arb> A(a1, a2);	// mindketto pozitiv, kulonben domain_error
-		
 		arbpp::arb x(0.4);
 		
 		// surusegfv: f(x, a1, a2) = x^(a1-1) * (1 - x)^(a2-1) / B(a1, a2)
@@ -647,6 +649,52 @@ namespace distributions
 		std::cout << "mean(beta_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::mean(A) << std::endl;
 		std::cout << "standard_deviation(beta_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::standard_deviation(A) << std::endl;
 		//std::cout << "quantile(beta_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", 0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO numeric_limits & static_cast int
+		std::cout << std::endl;
+	}
+	
+	void binomial_distr()
+	{
+		arbpp::arb n(6);	// n >= 0
+		arbpp::arb p(0.3);	// 0 <= p <= 1
+		boost::math::binomial_distribution<arbpp::arb> A(n, p);
+		arbpp::arb x(4);
+		
+		//std::cout << "cdf(binomial_distribution<arbpp::arb>(" << n << ", " << p << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
+		//std::cout << "pdf(binomial_distribution<arbpp::arb>(" << n << ", " << p << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
+		std::cout << "mean(binomial_distribution<arbpp::arb>(" << n << ", " << p << ") : " << boost::math::mean(A) << std::endl;
+		std::cout << "standard_deviation(binomial_distribution<arbpp::arb>(" << n << ", " << p << ") : " << boost::math::standard_deviation(A) << std::endl;
+		//std::cout << "quantile(binomial_distribution<arbpp::arb>(" << n << ", " << p << ", 0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO numeric_limits & static_cast int
+		std::cout << std::endl;
+	}
+	
+	void cauchy_lorentz()
+	{
+		arbpp::arb a1(1);
+		arbpp::arb a2(1.4);
+		boost::math::cauchy_distribution<arbpp::arb> A(a1, a2);
+		arbpp::arb x(4);
+		
+		// surusegfv: f(x, a1, a2) = 1/pi * (a2 / (x - a1)^2 + a2^2)
+			// NINCSEN: mean, std, variance, "stb"
+			// ha ilyet kerdezunk le, BOOST_STATIC_ASSERTION_FAILURE forditaskor
+		
+		//std::cout << "cdf(cauchy_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;	// TODO segfault
+		//std::cout << "pdf(cauchy_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO segfault
+		//std::cout << "quantile(cauchy_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", 0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO segfault
+		std::cout << std::endl;
+	}
+	
+	void chi_sqr()
+	{
+		arbpp::arb v(4);	// v pozitiv, kulonben domain_error
+		boost::math::chi_squared_distribution<arbpp::arb> A(v);
+		arbpp::arb x(2.7);
+		
+		//std::cout << "cdf(chi_squared_distribution<arbpp::arb>(" << v << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
+		//std::cout << "pdf(chi_squared_distribution<arbpp::arb>(" << v << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO numeric_limits
+		std::cout << "mean(chi_squared_distribution<arbpp::arb>(" << v << ") : " << boost::math::mean(A) << std::endl;
+		std::cout << "standard_deviation(chi_squared_distribution<arbpp::arb>(" << v << ") : " << boost::math::standard_deviation(A) << std::endl;
+		//std::cout << "quantile(chi_squared_distribution<arbpp::arb>(" << v << ", 0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO numeric_limits & static_cast int
 		std::cout << std::endl;
 	}
 }
@@ -661,10 +709,12 @@ int main()
 	//arbpp_demo_io();
 	//arbpp_demo_const();	// unfinished
 	//arbpp_demo_complex();	// partially unfinished
-	//arbpp_demo_gcd_lcm();	// unfinished
+	//arbpp_demo_gcd_lcm();	// unfinished, probably unneeded
+	
 	//deriv_roots::arbpp_demo_roots();
 	//noderiv_roots::arbpp_demo_roots();
 	//minimize_func::arbpp_demo_minimize();
+	
 	//special_functions::gamma();	// unfinished
 	//special_functions::factorial();	// unfinished
 	//special_functions::legendre();	// partially unfinished
@@ -683,9 +733,13 @@ int main()
 	//special_functions::sinc_sinhc();
 	//special_functions::inverse_hyperbolic();	// partially unfinished
 	//special_functions::owenst();	// unfinished
+
 	//distributions::normal();	// partially unfinished
 	//distributions::bernoulli();
-	distributions::beta_distr();	// partially unfinished
+	//distributions::beta_distr();	// partially unfinished
+	//distributions::binomial_distr();	// partially unfinished
+	//distributions::cauchy_lorentz();	// unfinished
+	distributions::chi_sqr();	// partially unfinished
 	
 	return 0;
 }
