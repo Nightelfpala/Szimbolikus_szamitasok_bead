@@ -294,9 +294,11 @@ void arbpp_demo_minimize()
 #include <boost/math/special_functions/ellint_2.hpp>
 #include <boost/math/special_functions/ellint_3.hpp>
 #include <boost/math/special_functions/jacobi_elliptic.hpp>
+#include <boost/math/special_functions/zeta.hpp>
+#include <boost/math/special_functions/expint.hpp>
 namespace special_functions
 {
-	void arbpp_demo_gamma()
+	void gamma()
 	{
 		arbpp::arb A(4.2);
 		arbpp::arb B(5);
@@ -306,7 +308,7 @@ namespace special_functions
 		std::cout << std::endl;
 	}
 	
-	void arbpp_demo_factorial()
+	void factorial()
 	{
 		arbpp::arb A(5);
 		
@@ -314,7 +316,7 @@ namespace special_functions
 		std::cout << std::endl;
 	}
 	
-	void arbpp_demo_legendre()
+	void legendre()
 	{
 		arbpp::arb A(0.5);	// abs(A) <= 1, kulonben domain_error
 		int n = 2;
@@ -334,7 +336,7 @@ namespace special_functions
 		std::cout << std::endl;
 	}
 	
-	void arbpp_demo_laguerre()
+	void laguerre()
 	{
 		arbpp::arb A(5.3);
 		int n = 3;
@@ -348,7 +350,7 @@ namespace special_functions
 		std::cout << std::endl;
 	}
 	
-	void arbpp_demo_hermite()
+	void hermite()
 	{
 		arbpp::arb A(0.8);
 		int n = 3;
@@ -359,7 +361,7 @@ namespace special_functions
 		std::cout << std::endl;
 	}
 	
-	void arbpp_demo_spherical_harmonic()
+	void spherical_harmonic()
 	{
 		arbpp::arb A(1.2);	// [0, pi]
 		arbpp::arb B(-0.6);	// [0, 2pi)
@@ -373,7 +375,7 @@ namespace special_functions
 		std::cout << std::endl;
 	}
 	
-	void arbpp_demo_bessel()	// tgamma()-ra epul
+	void bessel()	// tgamma()-ra epul
 	{
 		arbpp::arb A(2);
 		arbpp::arb B(3.1);
@@ -386,7 +388,7 @@ namespace special_functions
 		std::cout << std::endl;
 	}
 	
-	void arbpp_demo_hankel()	// cyl_bessel_j()-re epul
+	void hankel()	// cyl_bessel_j()-re epul
 	{
 		arbpp::arb A(2);
 		arbpp::arb B(3.1);
@@ -402,7 +404,7 @@ namespace special_functions
 		std::cout << std::endl;
 	}
 	
-	void arbpp_demo_airy()	// cyl_bessel_j()-re es cyl_bessel_k()-ra epul
+	void airy()	// cyl_bessel_j()-re es cyl_bessel_k()-ra epul
 	{
 		arbpp::arb A(0);
 		
@@ -416,7 +418,7 @@ namespace special_functions
 		std::cout << std::endl;
 	}
 	
-	void carlson()	// Carlson elliptikus integralok
+	void carlson_elliptic()	// Carlson elliptikus integralok
 	{
 		arbpp::arb A(1);
 		arbpp::arb B(0.5);
@@ -439,7 +441,7 @@ namespace special_functions
 		std::cout << std::endl;
 	}
 	
-	void legendre()	// Legendre elso-masod-harmad tipusu elliptikus integralok
+	void legendre_elliptic()	// Legendre elso-masod-harmad tipusu elliptikus integralok
 	{
 		arbpp::arb A(1);
 		arbpp::arb B(0.5);
@@ -460,7 +462,7 @@ namespace special_functions
 		//std::cout << "ellint_2(" << A << ", " << B << ") : " << boost::math::ellint_2(A, B) << std::endl;	// TODO fmod
 		std::cout << "ellint_2(" << B << ") : " << boost::math::ellint_2(B) << std::endl;
 		//std::cout << "ellint_3(" << A << ", " << C << ", " << B << ") : " << boost::math::ellint_3(A, C, B) << std::endl;	// TODO fmod
-		//std::cout << "ellint_3(" << B << ", " << A << ") : " << boost::math::ellint_3(B, A) << std::endl;	// TODO fix segfault - valoszinuleg constants.hpp-bol akar valamit arb-al lepeldanyositani (a main() elott szall el)
+		//std::cout << "ellint_3(" << B << ", " << A << ") : " << boost::math::ellint_3(B, A) << std::endl;	// TODO segfault - valoszinuleg constants.hpp-bol akar valamit arb-al lepeldanyositani (a main() elott szall el)
 		std::cout << std::endl;
 	}
 	
@@ -489,6 +491,47 @@ namespace special_functions
 		std::cout << std::endl;
 	}
 	
+	void zeta()
+	{
+		arbpp::arb A(4);
+		
+		// zeta(s) = sum(k=1..+inf) (1 / (k^s))
+		
+		//std::cout << "zeta(" << A << ") : " << boost::math::zeta(A) << std::endl;	// TODO numeric_limits
+		std::cout << std::endl;
+	}
+	
+	void exponential_integral()
+	{
+		arbpp::arb A(1.5);
+		int n = 2;
+		
+		// expint(n, x) = integral(1..+inf) e^(-x * t) / t^n dt
+		// expint(x) = -expint(1, -x)
+		
+		//std::cout << "expint(" << n << ", " << A << ") : " << boost::math::expint(n, A) << std::endl;	// TODO segfault
+		//std::cout << "expint(" << A << ") : " << boost::math::expint(A) << std::endl;	// TODO segfault
+		std::cout << std::endl;
+	}
+	
+	void basics()
+	{
+		arbpp::arb A(0.5);
+		arbpp::arb B(1);
+		
+		// sin|cos (pi * x), ln(1+x), exp(x) - 1, kobgyok, sqrt(1+x) - 1, x^y - 1, sqrt(x^2 + y^2)
+		
+		//std::cout << "sin_pi(" << A << ")" << boost::math::sin_pi(A) << std::endl;	// TODO static_cast int
+		//std::cout << "cos_pi(" << A << ")" << boost::math::cos_pi(A) << std::endl;	// TODO static_cast int
+		std::cout << "log1p(" << A << ")" << boost::math::log1p(A) << std::endl;
+		//std::cout << "expm1(" << A << ")" << boost::math::expm1(A) << std::endl;	// TODO numeric_limits
+		//std::cout << "cbrt(" << A << ")" << boost::math::cbrt(A) << std::endl;	// TODO frexp(arb, arb) not implemented	-	arb doesn't have the required function
+		//std::cout << "sqrt1pm1(" << A << ")" << boost::math::sqrt1pm1(A) << std::endl;	// TODO numeric_limits
+		//std::cout << "powm1(" << A << ", " << B << ")" << boost::math::powm1(A, B) << std::endl;	// TODO numeric_limits
+		std::cout << "hypot(" << A << ", " << B << ")" << boost::math::hypot(A, B) << std::endl;
+		std::cout << std::endl;
+	}
+	
 }
 
 int main()
@@ -505,18 +548,21 @@ int main()
 	//deriv_roots::arbpp_demo_roots();
 	//noderiv_roots::arbpp_demo_roots();
 	//minimize_func::arbpp_demo_minimize();
-	//special_functions::arbpp_demo_gamma();	// unfinished
-	//special_functions::arbpp_demo_factorial();	// unfinished
-	//special_functions::arbpp_demo_legendre();	// partially unfinished
-	//special_functions::arbpp_demo_laguerre();
-	//special_functions::arbpp_demo_hermite();
-	//special_functions::arbpp_demo_spherical_harmonic();	// unfinished
-	//special_functions::arbpp_demo_bessel();	// unfinished
-	//special_functions::arbpp_demo_hankel();	// unfinished
-	//special_functions::arbpp_demo_airy();	// unfinished
-	//special_functions::carlson();
+	//special_functions::gamma();	// unfinished
+	//special_functions::factorial();	// unfinished
 	//special_functions::legendre();	// partially unfinished
-	special_functions::jacobi_elliptic();
+	//special_functions::laguerre();
+	//special_functions::hermite();
+	//special_functions::spherical_harmonic();	// unfinished
+	//special_functions::bessel();	// unfinished
+	//special_functions::hankel();	// unfinished
+	//special_functions::airy();	// unfinished
+	//special_functions::carlson_elliptic();
+	//special_functions::legendre_elliptic();	// partially unfinished
+	//special_functions::jacobi_elliptic();
+	//special_functions::zeta();	// unfinished
+	//special_functions::exponential_integral();	// unfinished
+	//special_functions::basics();	// partially unfinished
 	
 	return 0;
 }
