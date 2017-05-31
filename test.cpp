@@ -593,14 +593,19 @@ namespace special_functions
 #include <boost/math/distributions/gamma.hpp>
 #include <boost/math/distributions/geometric.hpp>
 #include <boost/math/distributions/hypergeometric.hpp>
+#include <boost/math/distributions/inverse_chi_squared.hpp>
+#include <boost/math/distributions/inverse_gamma.hpp>
+#include <boost/math/distributions/inverse_gaussian.hpp>
 namespace distributions
 {
 	// itt a kiirasok tukrozni fogjak az eloszlas paramereterit, de a fvhivasok nem egyeznek meg azzal, amit kiirunk
 	// az elso peldat leszamitva csak az eloszlasfv, a surusegfv, a varhato ertek, a szoras es a kvantilis lesz tesztelve (illetve amelyik ertelmes az adott eloszlasra)
 	void normal()
 	{
-		boost::math::normal_distribution<arbpp::arb> A(1.5, 2);	// normal / Gauss-eloszlas
+		boost::math::normal_distribution<arbpp::arb> A(1.5, 2);
 		arbpp::arb x(1.2);
+		
+		// normal / Gauss-eloszlas
 		
 		// cdf - eloszlasfv
 		// pdf - surusegfv
@@ -632,7 +637,9 @@ namespace distributions
 	void bernoulli()
 	{
 		arbpp::arb val(0.4);
-		boost::math::bernoulli_distribution<arbpp::arb> A(val);	// Bernoulli-eloszlas: egy kiserlet, p valoszinuseggel sikeres
+		boost::math::bernoulli_distribution<arbpp::arb> A(val);
+		
+		// Bernoulli-eloszlas: egy kiserlet, p valoszinuseggel sikeres
 		
 		std::cout << "cdf(bernoulli_distribution<arbpp::arb>(" << val << ", 0) : " << boost::math::cdf(A, 0) << std::endl;
 		std::cout << "pdf(bernoulli_distribution<arbpp::arb>(" << val << ", 1) : " << boost::math::pdf(A, 1) << std::endl;
@@ -751,7 +758,7 @@ namespace distributions
 		//std::cout << "pdf(fisher_f_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
 		std::cout << "mean(fisher_f_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::mean(A) << std::endl;
 		std::cout << "standard_deviation(fisher_f_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::standard_deviation(A) << std::endl;
-		//std::cout << "quantile(extreme_value_distribution<arbpp::arb>(" << a1 << ", " << a2 << "0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO numeric_limits & static_cast int
+		//std::cout << "quantile(fisher_f_distribution<arbpp::arb>(" << a1 << ", " << a2 << "0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO numeric_limits & static_cast int
 		std::cout << std::endl;
 	}
 	
@@ -768,7 +775,7 @@ namespace distributions
 		//std::cout << "pdf(gamma_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO numeric_limits
 		std::cout << "mean(gamma_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::mean(A) << std::endl;
 		std::cout << "standard_deviation(gamma_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::standard_deviation(A) << std::endl;
-		//std::cout << "quantile(extreme_value_distribution<arbpp::arb>(" << a1 << ", " << a2 << "0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO numeric_limits & static_cast int
+		//std::cout << "quantile(gamma_distribution<arbpp::arb>(" << a1 << ", " << a2 << "0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO numeric_limits & static_cast int
 		std::cout << std::endl;
 	}
 	
@@ -803,7 +810,54 @@ namespace distributions
 		std::cout << std::endl;
 	}
 	
+	void inverse_chi_sq()
+	{
+		arbpp::arb a1(5);	// pozitiv, bizonyos kuszobok alatt egyes jellemzok (pl atlag) nem leteznek
+		arbpp::arb a2(0.8);
+		boost::math::inverse_chi_squared_distribution<arbpp::arb> A(a1, a2);
+		arbpp::arb x(5);
+		
+		//std::cout << "cdf(inverse_chi_squared_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
+		//std::cout << "pdf(inverse_chi_squared_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
+		std::cout << "mean(inverse_chi_squared_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::mean(A) << std::endl;
+		std::cout << "standard_deviation(inverse_chi_squared_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::standard_deviation(A) << std::endl;
+		//std::cout << "quantile(inverse_chi_squared_distribution<arbpp::arb>(" << a1 << ", " << a2 << "0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO numeric_limits & static_cast int
+		std::cout << std::endl;
+	}
 	
+	void inverse_gamma()
+	{
+		arbpp::arb a1(4);	// pozitiv
+		arbpp::arb a2(1.5);	// pozitiv
+		boost::math::inverse_gamma_distribution<arbpp::arb> A(a1, a2);
+		arbpp::arb x(3);
+		
+		// surusegfv: f(x, a1, a2) = a2^a1 * (1/x)^(a1 + 1) * e^(-a2/x) / gamma(a1)
+		
+		//std::cout << "cdf(inverse_gamma_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
+		//std::cout << "pdf(inverse_gamma_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO numeric_limits
+		std::cout << "mean(inverse_gamma_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::mean(A) << std::endl;
+		std::cout << "standard_deviation(inverse_gamma_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::standard_deviation(A) << std::endl;
+		//std::cout << "quantile(inverse_gamma_distribution<arbpp::arb>(" << a1 << ", " << a2 << "0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO numeric_limits & static_cast int
+		std::cout << std::endl;
+	}
+	
+	void inverse_normal()
+	{
+		arbpp::arb a1(3);
+		arbpp::arb a2(5);
+		boost::math::inverse_gaussian_distribution<arbpp::arb> A(a1, a2);
+		arbpp::arb x(1);
+		
+		// surusegfv: f(x, a1, a2) = sqrt(a2 / (2 * pi * x^3)) * e^(-a2 * (x - a1)^2 / (2 * a1^2 *x))
+		
+		//std::cout << "cdf(inverse_gaussian_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
+		//std::cout << "pdf(inverse_gaussian_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO segfault
+		std::cout << "mean(inverse_gaussian_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::mean(A) << std::endl;
+		std::cout << "standard_deviation(inverse_gaussian_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::standard_deviation(A) << std::endl;
+		//std::cout << "quantile(inverse_gaussian_distribution<arbpp::arb>(" << a1 << ", " << a2 << "0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO static_cast int
+		std::cout << std::endl;
+	}
 }
 
 int main()
@@ -821,6 +875,9 @@ int main()
 	//deriv_roots::arbpp_demo_roots();
 	//noderiv_roots::arbpp_demo_roots();
 	//minimize_func::arbpp_demo_minimize();
+	
+	// unfinished - egyik fuggveny sem mukodik (forditasideju hiba vagy segfault)
+	// partially unfinished - legalabb egy fuggveny nem mukodik
 	
 	//special_functions::gamma();	// unfinished
 	//special_functions::factorial();	// unfinished
@@ -853,7 +910,9 @@ int main()
 	//distributions::gamma_distr();	// partially unfinished
 	//distributions::geometric();	// partially unfinished
 	//distributions::hypergeometric();	// partially unfinished
-	
+	//distributions::inverse_chi_sq();	// partially unfinished
+	//distributions::inverse_gamma();	// partially unfinished
+	//distributions::inverse_normal();	// partially unfinished
 	
 	return 0;
 }
