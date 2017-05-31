@@ -293,6 +293,7 @@ void arbpp_demo_minimize()
 #include <boost/math/special_functions/ellint_1.hpp>
 #include <boost/math/special_functions/ellint_2.hpp>
 #include <boost/math/special_functions/ellint_3.hpp>
+#include <boost/math/special_functions/jacobi_elliptic.hpp>
 namespace special_functions
 {
 	void arbpp_demo_gamma()
@@ -459,7 +460,32 @@ namespace special_functions
 		//std::cout << "ellint_2(" << A << ", " << B << ") : " << boost::math::ellint_2(A, B) << std::endl;	// TODO fmod
 		std::cout << "ellint_2(" << B << ") : " << boost::math::ellint_2(B) << std::endl;
 		//std::cout << "ellint_3(" << A << ", " << C << ", " << B << ") : " << boost::math::ellint_3(A, C, B) << std::endl;	// TODO fmod
-		//std::cout << "ellint_3(" << B << ", " << A << ") : " << boost::math::ellint_3(B, A) << std::endl;	// TODO fix segfault
+		//std::cout << "ellint_3(" << B << ", " << A << ") : " << boost::math::ellint_3(B, A) << std::endl;	// TODO fix segfault - valoszinuleg constants.hpp-bol akar valamit arb-al lepeldanyositani (a main() elott szall el)
+		std::cout << std::endl;
+	}
+	
+	void jacobi_elliptic()
+	{
+		arbpp::arb A(1);
+		arbpp::arb B(0.5);
+		arbpp::arb C;
+		arbpp::arb D;
+		
+		// u = integral(0..phi) 1 / sqrt(1 - k^2 *sin^2(t)) dt
+			// jacobi_sn(k, u) = sn(u, k) := sin(phi)
+			// jacobi_cn(k, u) = cn(u, k) := cos(phi)
+			// jacobi_dn(k, u) = dn(u, k) := sqrt(1 - k^2 *sin^2(t))
+		// jacobi_elliptic(k, u, &C, &D) = sn(u, k)
+			// C = cn(u, k), D = dn(u, k)
+		// jacobi_[A][B] = jacobi_[A] / jacobi_[B]
+			// pl. jacobi_cd = jacobi_cn / jacobi_dn
+		// jacobi_n[A] = 1 / jacobi_[A]
+			// pl. jacobi_nd = 1 / jacobi_dn
+		
+		std::cout << "jacobi_elliptic(" << A << ", " << B << ", " << C << ", " << D << ") : " << boost::math::jacobi_elliptic(A, B, &C, &D) << std::endl;
+		std::cout << "\tC: " << C << std::endl << "\tD: " << D << std::endl;
+		std::cout << "jacobi_cd(" << A << ", " << B << ") : " << boost::math::jacobi_cd(A, B) << std::endl;
+		std::cout << "jacobi_nd(" << A << ", " << B << ") : " << boost::math::jacobi_nd(A, B) << std::endl;
 		std::cout << std::endl;
 	}
 	
@@ -489,7 +515,8 @@ int main()
 	//special_functions::arbpp_demo_hankel();	// unfinished
 	//special_functions::arbpp_demo_airy();	// unfinished
 	//special_functions::carlson();
-	special_functions::legendre();	// partially unfinished
+	//special_functions::legendre();	// partially unfinished
+	special_functions::jacobi_elliptic();
 	
 	return 0;
 }
