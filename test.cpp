@@ -588,7 +588,9 @@ namespace special_functions
 #include <boost/math/distributions/cauchy.hpp>
 #include <boost/math/distributions/chi_squared.hpp>
 #include <boost/math/distributions/exponential.hpp>
-#include <boost/math/distributions/extreme_value.hpp>	// a dokumentacioban extreme.hpp neven van, de azt nem talalta
+#include <boost/math/distributions/extreme_value.hpp>	// a dokumentacioban extreme.hpp neven van, de az nem letezik
+#include <boost/math/distributions/fisher_f.hpp>
+#include <boost/math/distributions/gamma.hpp>
 namespace distributions
 {
 	// itt a kiirasok tukrozni fogjak az eloszlas paramereterit, de a fvhivasok nem egyeznek meg azzal, amit kiirunk
@@ -733,6 +735,40 @@ namespace distributions
 		std::cout << "quantile(extreme_value_distribution<arbpp::arb>(" << a1 << ", " << a2 << "0.5) : " << boost::math::quantile(A, 0.5) << std::endl;
 		std::cout << std::endl;
 	}
+	
+	void fisher_f()
+	{
+		arbpp::arb a1(4);	// pozitiv
+		arbpp::arb a2(10);	// pozitiv
+		boost::math::fisher_f_distribution<arbpp::arb> A(a1, a2);
+		arbpp::arb x(1.2);
+		
+		// surusegfv: f(x, n, m) = m^(m/2) * n^(n/2) * x^(n/2 - 1) / ((m + n * x)^((n + m) / 2) * B(n / 2, m / 2))
+		
+		//std::cout << "cdf(fisher_f_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
+		//std::cout << "pdf(fisher_f_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
+		std::cout << "mean(fisher_f_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::mean(A) << std::endl;
+		std::cout << "standard_deviation(fisher_f_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::standard_deviation(A) << std::endl;
+		//std::cout << "quantile(extreme_value_distribution<arbpp::arb>(" << a1 << ", " << a2 << "0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO numeric_limits & static_cast int
+		std::cout << std::endl;
+	}
+	
+	void gamma_distr()
+	{
+		arbpp::arb a1(4);	// pozitiv
+		arbpp::arb a2(1.5);	// pozitiv
+		boost::math::gamma_distribution<arbpp::arb> A(a1, a2);
+		arbpp::arb x(3);
+		
+		// surusegfv: f(x, a1, a2) = x^(a1 - 1) * e^(-x/a2) / (a2^a1 * gamma(a1))
+		
+		//std::cout << "cdf(gamma_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
+		//std::cout << "pdf(gamma_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO numeric_limits
+		std::cout << "mean(gamma_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::mean(A) << std::endl;
+		std::cout << "standard_deviation(gamma_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::standard_deviation(A) << std::endl;
+		//std::cout << "quantile(extreme_value_distribution<arbpp::arb>(" << a1 << ", " << a2 << "0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO numeric_limits & static_cast int
+		std::cout << std::endl;
+	}
 }
 
 int main()
@@ -778,6 +814,8 @@ int main()
 	//distributions::chi_sqr();	// partially unfinished
 	//distributions::exponential();	// partially unfinished
 	//distributions::extreme();	// partially unfinished
+	//distributions::fisher_f();	// partially unfinished
+	//distributions::gamma_distr();	// partially unfinished
 	
 	return 0;
 }
