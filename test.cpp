@@ -296,6 +296,20 @@ void arbpp_demo_minimize()
 #include <boost/math/special_functions/jacobi_elliptic.hpp>
 #include <boost/math/special_functions/zeta.hpp>
 #include <boost/math/special_functions/expint.hpp>
+//#include <boost/math/special_functions/sin_pi.hpp>
+//#include <boost/math/special_functions/cos_pi.hpp>
+//#include <boost/math/special_functions/log1p.hpp>
+//#include <boost/math/special_functions/expm1.hpp>
+//#include <boost/math/special_functions/cbrt.hpp>
+//#include <boost/math/special_functions/sqrt1pm1.hpp>
+//#include <boost/math/special_functions/powm1.hpp>
+//#include <boost/math/special_functions/hypot.hpp>
+//#include <boost/math/special_functions/sinc.hpp>
+#include <boost/math/special_functions/sinhc.hpp>
+#include <boost/math/special_functions/asinh.hpp>
+#include <boost/math/special_functions/acosh.hpp>
+#include <boost/math/special_functions/atanh.hpp>
+#include <boost/math/special_functions/owens_t.hpp>
 namespace special_functions
 {
 	void gamma()
@@ -532,6 +546,39 @@ namespace special_functions
 		std::cout << std::endl;
 	}
 	
+	void sinc_sinhc()
+	{
+		arbpp::arb A(0);
+		
+		// sinc_pi(x) = sin(x) / x
+		// sinhc_pi(x) = sinh(x) / x
+		std::cout << "sinc_pi(" << A << ") : " << boost::math::sinc_pi(A) << std::endl;
+		std::cout << "sinhc_pi(" << A << ") : " << boost::math::sinhc_pi(A) << std::endl;
+		std::cout << std::endl;
+	}
+	
+	void inverse_hyperbolic()
+	{
+		arbpp::arb A(2);
+		arbpp::arb B(-0.6);
+		
+		//std::cout << "asinh(" << A << ") : " << boost::math::asinh(A) << std::endl;	// TODO numeric_limits
+		//std::cout << "acosh(" << A << ") : " << boost::math::acosh(A) << std::endl;	// TODO segfault
+		std::cout << "atanh(" << B << ") : " << boost::math::atanh(B) << std::endl;
+		std::cout << std::endl;
+	}
+	
+	void owenst()
+	{
+		arbpp::arb A(2);
+		arbpp::arb B(-0.5);
+		
+		// owens_t(h, a) = 1 / (2*pi) * integral(0..a) exp(-1/2 * h^2 * (1 + x^2)) / (1 + x^2) dx
+		
+		//std::cout << "owens_t(" << A << ", " << B << ") : " << boost::math::owens_t(A, B) << std::endl;	// TODO static_cast int
+		std::cout << std::endl;
+	}
+	
 }
 
 int main()
@@ -563,6 +610,9 @@ int main()
 	//special_functions::zeta();	// unfinished
 	//special_functions::exponential_integral();	// unfinished
 	//special_functions::basics();	// partially unfinished
+	//special_functions::sinc_sinhc();
+	//special_functions::inverse_hyperbolic();	// partially unfinished
+	//special_functions::owenst();
 	
 	return 0;
 }
