@@ -331,6 +331,36 @@ void arbpp_test_coth()
 	std::cout << std::endl;
 }
 
+void arbpp_test_asinh()
+{
+	arbpp::arb A(0.5);
+	arbpp::arb B(-4.3);
+	
+	std::cout << "asinh(" << A << ") : " << asinh(A) << std::endl;
+	std::cout << "asinh(" << B << ") : " << asinh(B) << std::endl;
+	std::cout << std::endl;
+}
+
+void arbpp_test_acosh()
+{
+	arbpp::arb A(2);
+	arbpp::arb B(4.3);
+	
+	std::cout << "acosh(" << A << ") : " << acosh(A) << std::endl;
+	std::cout << "acosh(" << B << ") : " << acosh(B) << std::endl;
+	std::cout << std::endl;
+}
+
+void arbpp_test_atanh()
+{
+	arbpp::arb A(0.5);
+	arbpp::arb B(-0.8);
+	
+	std::cout << "atanh(" << A << ") : " << atanh(A) << std::endl;
+	std::cout << "atanh(" << B << ") : " << atanh(B) << std::endl;
+	std::cout << std::endl;
+}
+
 void arbpp_test_ldexp()
 {
 	// ldexp(x, ex) = x * 2^ex
@@ -374,6 +404,9 @@ int main()
 	//arbpp_test_cosh();	// cosh()
 	//arbpp_test_tanh();	// tanh()
 	//arbpp_test_coth();	// coth()
+	//arbpp_test_asinh();
+	//arbpp_test_acosh();
+	//arbpp_test_atanh();
 	//arbpp_test_atan2();	// atan2()
 	//arbpp_test_ldexp();	// ldexp()
 	//arbpp_test_boostmathtools();

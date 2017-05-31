@@ -1605,6 +1605,30 @@ class arb: private detail::base_arb<>
 			return retval;
 		}
 		
+		arb asinh() const
+		{
+			arb retval;
+			::arb_asinh(&retval.m_arb, &m_arb, m_prec);
+			retval.m_prec = m_prec;
+			return retval;
+		}
+		
+		arb acosh() const
+		{
+			arb retval;
+			::arb_acosh(&retval.m_arb, &m_arb, m_prec);
+			retval.m_prec = m_prec;
+			return retval;
+		}
+		
+		arb atanh() const
+		{
+			arb retval;
+			::arb_atanh(&retval.m_arb, &m_arb, m_prec);
+			retval.m_prec = m_prec;
+			return retval;
+		}
+		
 		arb ldexp(int ex) const	// gepi epszilon szamitasahoz
 		{
 			arb retval;
@@ -1764,6 +1788,21 @@ inline arb tanh(const arb &a)
 inline arb coth(const arb &a)
 {
 	return a.coth();
+}
+
+inline arb asinh(const arb &a)
+{
+	return a.asinh();
+}
+
+inline arb acosh(const arb &a)
+{
+	return a.acosh();
+}
+
+inline arb atanh(const arb &a)
+{
+	return a.atanh();
 }
 
 inline arb ldexp(const arb &a, int n)
