@@ -591,6 +591,8 @@ namespace special_functions
 #include <boost/math/distributions/extreme_value.hpp>	// a dokumentacioban extreme.hpp neven van, de az nem letezik
 #include <boost/math/distributions/fisher_f.hpp>
 #include <boost/math/distributions/gamma.hpp>
+#include <boost/math/distributions/geometric.hpp>
+#include <boost/math/distributions/hypergeometric.hpp>
 namespace distributions
 {
 	// itt a kiirasok tukrozni fogjak az eloszlas paramereterit, de a fvhivasok nem egyeznek meg azzal, amit kiirunk
@@ -769,6 +771,39 @@ namespace distributions
 		//std::cout << "quantile(extreme_value_distribution<arbpp::arb>(" << a1 << ", " << a2 << "0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO numeric_limits & static_cast int
 		std::cout << std::endl;
 	}
+	
+	void geometric()
+	{
+		arbpp::arb p(0.4);
+		boost::math::geometric_distribution<arbpp::arb> A(p);
+		arbpp::arb x(4);
+		
+		//std::cout << "cdf(geometric_distribution<arbpp::arb>(" << p << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
+		std::cout << "pdf(geometric_distribution<arbpp::arb>(" << p << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;
+		std::cout << "mean(geometric_distribution<arbpp::arb>(" << p << ") : " << boost::math::mean(A) << std::endl;
+		std::cout << "standard_deviation(geometric_distribution<arbpp::arb>(" << p << ") : " << boost::math::standard_deviation(A) << std::endl;
+		std::cout << "quantile(geometric_distribution<arbpp::arb>(" << p << "0.5) : " << boost::math::quantile(A, 0.5) << std::endl;
+		std::cout << std::endl;
+	}
+	
+	void hypergeometric()
+	{
+		// ez az eloszlas a template parameteret a publikus value_type tipusan kivul sehol sem hasznalja
+		unsigned int r(20);
+		unsigned int n(10);
+		unsigned int N(200);
+		boost::math::hypergeometric_distribution<arbpp::arb> A(r, n, N);
+		arbpp::arb x(5);
+		
+		//std::cout << "cdf(hypergeometric_distribution<arbpp::arb>(" << r << ", " << n << ", " << N << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
+		//std::cout << "pdf(hypergeometric_distribution<arbpp::arb>(" << r << ", " << n << ", " << N << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
+		std::cout << "mean(hypergeometric_distribution<arbpp::arb>(" << r << ", " << n << ", " << N << ") : " << boost::math::mean(A) << std::endl;
+		std::cout << "standard_deviation(hypergeometric_distribution<arbpp::arb>(" << r << ", " << n << ", " << N << ") : " << boost::math::standard_deviation(A) << std::endl;
+		//std::cout << "quantile(hypergeometric_distribution<arbpp::arb>(" << r << ", " << n << ", " << N << "0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO segfault
+		std::cout << std::endl;
+	}
+	
+	
 }
 
 int main()
@@ -816,6 +851,9 @@ int main()
 	//distributions::extreme();	// partially unfinished
 	//distributions::fisher_f();	// partially unfinished
 	//distributions::gamma_distr();	// partially unfinished
+	//distributions::geometric();	// partially unfinished
+	//distributions::hypergeometric();	// partially unfinished
+	
 	
 	return 0;
 }
