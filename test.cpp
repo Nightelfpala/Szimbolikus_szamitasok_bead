@@ -583,8 +583,10 @@ namespace special_functions
 
 #include <boost/math/distributions/normal.hpp>
 #include <boost/math/distributions/bernoulli.hpp>
+#include <boost/math/distributions/beta.hpp>
 namespace distributions
 {
+	// itt a kiirasok tukrozni fogjak az eloszlas paramereterit, de a fvhivasok nem egyeznek meg azzal, amit kiirunk
 	void normal()
 	{
 		boost::math::normal_distribution<arbpp::arb> A(1.5, 2);	// normal / Gauss-eloszlas
@@ -620,13 +622,32 @@ namespace distributions
 	void bernoulli()
 	{
 		arbpp::arb val(0.4);
-		boost::math::bernoulli_distribution<arbpp::arb> A(0.4);	// Bernoulli-eloszlas: egy kiserlet, p valoszinuseggel sikeres
+		boost::math::bernoulli_distribution<arbpp::arb> A(val);	// Bernoulli-eloszlas: egy kiserlet, p valoszinuseggel sikeres
 		
 		std::cout << "cdf(bernoulli_distribution<arbpp::arb>(" << val << ", 0) : " << boost::math::cdf(A, 0) << std::endl;
 		std::cout << "pdf(bernoulli_distribution<arbpp::arb>(" << val << ", 1) : " << boost::math::pdf(A, 1) << std::endl;
 		std::cout << "mean(bernoulli_distribution<arbpp::arb>(" << val << ") : " << boost::math::mean(A) << std::endl;
 		std::cout << "standard_deviation(bernoulli_distribution<arbpp::arb>(" << val << ") : " << boost::math::standard_deviation(A) << std::endl;
 		std::cout << "quantile(standard_deviation<arbpp::arb>(" << val << ", 0.5) : " << boost::math::quantile(A, 0.5) << std::endl;
+		std::cout << std::endl;
+	}
+	
+	void beta_distr()
+	{
+		arbpp::arb a1(2);
+		arbpp::arb a2(3);
+		boost::math::beta_distribution<arbpp::arb> A(a1, a2);	// mindketto pozitiv, kulonben domain_error
+		
+		arbpp::arb x(0.4);
+		
+		// surusegfv: f(x, a1, a2) = x^(a1-1) * (1 - x)^(a2-1) / B(a1, a2)
+		
+		//std::cout << "cdf(beta_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
+		//std::cout << "pdf(beta_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
+		std::cout << "mean(beta_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::mean(A) << std::endl;
+		std::cout << "standard_deviation(beta_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::standard_deviation(A) << std::endl;
+		//std::cout << "quantile(beta_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", 0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO numeric_limits & static_cast int
+		std::cout << std::endl;
 	}
 }
 
@@ -664,6 +685,7 @@ int main()
 	//special_functions::owenst();	// unfinished
 	//distributions::normal();	// partially unfinished
 	//distributions::bernoulli();
+	distributions::beta_distr();	// partially unfinished
 	
 	return 0;
 }
