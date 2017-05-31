@@ -290,6 +290,9 @@ void arbpp_demo_minimize()
 #include <boost/math/special_functions/ellint_rd.hpp>
 #include <boost/math/special_functions/ellint_rj.hpp>
 #include <boost/math/special_functions/ellint_rc.hpp>
+#include <boost/math/special_functions/ellint_1.hpp>
+#include <boost/math/special_functions/ellint_2.hpp>
+#include <boost/math/special_functions/ellint_3.hpp>
 namespace special_functions
 {
 	void arbpp_demo_gamma()
@@ -306,7 +309,7 @@ namespace special_functions
 	{
 		arbpp::arb A(5);
 		
-		//std::cout << A << "! : " << boost::math::factorial<arbpp::arb>(5) << std::endl;	// TODO invalid static_cast to int
+		//std::cout << A << "! : " << boost::math::factorial<arbpp::arb>(5) << std::endl;	// TODO static_cast int
 		std::cout << std::endl;
 	}
 	
@@ -417,7 +420,7 @@ namespace special_functions
 		arbpp::arb A(1);
 		arbpp::arb B(0.5);
 		arbpp::arb C(1.5);
-		arbpp::arb D(1.6);
+		arbpp::arb D(2.6);
 		
 		// ellint_rf(x, y, z) = 1/2 * integral(0..+inf) ((t + x) * (t + y) * (t + z))^(-1/2) dt
 			// mind nemnegativ, legfeljebb az egyik 0	->	kulonben domain_error
@@ -432,6 +435,31 @@ namespace special_functions
 		std::cout << "ellint_rd(" << A << ", " << B << ", " << C << ") : " << boost::math::ellint_rd(A, B, C) << std::endl;
 		std::cout << "ellint_rj(" << A << ", " << B << ", " << C << ", " << D <<  ") : " << boost::math::ellint_rj(A, B, C, D) << std::endl;
 		std::cout << "ellint_rc(" << A << ", " << B << ") : " << boost::math::ellint_rc(A, B) << std::endl;
+		std::cout << std::endl;
+	}
+	
+	void legendre()	// Legendre elso-masod-harmad tipusu elliptikus integralok
+	{
+		arbpp::arb A(1);
+		arbpp::arb B(0.5);
+		arbpp::arb C(2);
+		
+		// ellint_1(phi, k) = integral(0..phi) 1 / sqrt(1 - k^2 * sin^2(t)) dt
+		// ellint_1(k) = ellint_1(pi/2, k)
+			// abs(k) <= 1 	-	elvileg, de k = 1-el tesztelve elszallt overflow_error-ral
+		// ellint_2(phi, k) = integral(0..phi) sqrt(1 - k^2 * sin^2(t)) dt
+		// ellint_2(k) = ellint_2(pi/2, k)
+			// abs(k) <= 1 	-	ez nem szallt el k = 1-el
+		// ellint_3(n, phi, k) = integral(0..phi) 1 / ((1 - n *sin^2(t)) * sqrt(1 - k^2 * sin^2(t))) dt
+		// ellint_3(n, k) = ellint_3(n, pi/2, k)
+			// abs(k) <= 1; n < 1
+		
+		//std::cout << "ellint_1(" << A << ", " << B << ") : " << boost::math::ellint_1(A, B) << std::endl;	// TODO fmod(arb, arb) not implemented	-	arb_t doesn't have the required function
+		std::cout << "ellint_1(" << B << ") : " << boost::math::ellint_1(B) << std::endl;
+		//std::cout << "ellint_2(" << A << ", " << B << ") : " << boost::math::ellint_2(A, B) << std::endl;	// TODO fmod
+		std::cout << "ellint_2(" << B << ") : " << boost::math::ellint_2(B) << std::endl;
+		//std::cout << "ellint_3(" << A << ", " << C << ", " << B << ") : " << boost::math::ellint_3(A, C, B) << std::endl;	// TODO fmod
+		//std::cout << "ellint_3(" << B << ", " << A << ") : " << boost::math::ellint_3(B, A) << std::endl;	// TODO fix segfault
 		std::cout << std::endl;
 	}
 	
@@ -460,7 +488,8 @@ int main()
 	//special_functions::arbpp_demo_bessel();	// unfinished
 	//special_functions::arbpp_demo_hankel();	// unfinished
 	//special_functions::arbpp_demo_airy();	// unfinished
-	special_functions::carlson();
+	//special_functions::carlson();
+	special_functions::legendre();	// partially unfinished
 	
 	return 0;
 }
