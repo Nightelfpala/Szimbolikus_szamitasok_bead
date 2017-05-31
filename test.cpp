@@ -286,6 +286,10 @@ void arbpp_demo_minimize()
 #include <boost/math/special_functions/bessel.hpp>
 #include <boost/math/special_functions/hankel.hpp>	// a header nev nincs a dokumentacioban benne
 #include <boost/math/special_functions/airy.hpp>
+#include <boost/math/special_functions/ellint_rf.hpp>
+#include <boost/math/special_functions/ellint_rd.hpp>
+#include <boost/math/special_functions/ellint_rj.hpp>
+#include <boost/math/special_functions/ellint_rc.hpp>
 namespace special_functions
 {
 	void arbpp_demo_gamma()
@@ -407,6 +411,30 @@ namespace special_functions
 		//std::cout << "airy_bi_prime(" << A << ") : " << boost::math::airy_bi_prime(A) << std::endl;	// TODO numeric_limits & static_cast int
 		std::cout << std::endl;
 	}
+	
+	void carlson()	// Carlson elliptikus integralok
+	{
+		arbpp::arb A(1);
+		arbpp::arb B(0.5);
+		arbpp::arb C(1.5);
+		arbpp::arb D(1.6);
+		
+		// ellint_rf(x, y, z) = 1/2 * integral(0..+inf) ((t + x) * (t + y) * (t + z))^(-1/2) dt
+			// mind nemnegativ, legfeljebb az egyik 0	->	kulonben domain_error
+		// ellint_rd(x, y, z) = 3/2 * integral(0..+inf) ((t + x) * (t + y))^(-1/2) * (t + z)^(-3/2) dt
+			// x, y nemnegativ, legfeljebb az egyik 0; z nemnegativ
+		// ellint_rj(x, y, z, p) = 3/2 * integral(0..+inf) (t + p)^(-1) ((t + x) * (t + y) * (t + z))^(-1/2) dt
+			// x, y, z nemnegativ, legf az egyik 0; p nem 0
+		// ellint_rc(x, y) = 1/2 * integral(0..+inf) (t + x)^(-1/2) * (t + y)^(-1) dt
+			// x pozitiv; y nem 0
+		
+		std::cout << "ellint_rf(" << A << ", " << B << ", " << C << ") : " << boost::math::ellint_rf(A, B, C) << std::endl;
+		std::cout << "ellint_rd(" << A << ", " << B << ", " << C << ") : " << boost::math::ellint_rd(A, B, C) << std::endl;
+		std::cout << "ellint_rj(" << A << ", " << B << ", " << C << ", " << D <<  ") : " << boost::math::ellint_rj(A, B, C, D) << std::endl;
+		std::cout << "ellint_rc(" << A << ", " << B << ") : " << boost::math::ellint_rc(A, B) << std::endl;
+		std::cout << std::endl;
+	}
+	
 }
 
 int main()
@@ -432,6 +460,7 @@ int main()
 	//special_functions::arbpp_demo_bessel();	// unfinished
 	//special_functions::arbpp_demo_hankel();	// unfinished
 	//special_functions::arbpp_demo_airy();	// unfinished
+	special_functions::carlson();
 	
 	return 0;
 }
