@@ -608,6 +608,10 @@ namespace special_functions
 #include <boost/math/distributions/poisson.hpp>
 #include <boost/math/distributions/rayleigh.hpp>
 #include <boost/math/distributions/skew_normal.hpp>
+#include <boost/math/distributions/students_t.hpp>
+#include <boost/math/distributions/triangular.hpp>
+#include <boost/math/distributions/uniform.hpp>
+#include <boost/math/distributions/weibull.hpp>
 namespace distributions
 {
 	// itt a kiirasok tukrozni fogjak az eloszlas paramereterit, de a fvhivasok nem egyeznek meg azzal, amit kiirunk
@@ -1063,6 +1067,68 @@ namespace distributions
 		//std::cout << "quantile(skew_normal_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << a3 << ", 0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO numeric_limits & static_cast int
 		std::cout << std::endl;
 	}
+	
+	void students_t()
+	{
+		arbpp::arb a1(4);	// pozitiv
+		boost::math::students_t_distribution<arbpp::arb> A(a1);
+		arbpp::arb x(1.6);
+		
+		// surusegfv: f(x, a1) = gamma((a1 + 1) / 2) / sqrt(a1 * pi) * gamma(a1/2) * (1 + x^2/a1)^((a1 + 1) / 2)
+		
+		//std::cout << "cdf(students_t_distribution<arbpp::arb>(" << a1 << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
+		//std::cout << "pdf(students_t_distribution<arbpp::arb>(" << a1 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO static_cast int
+		std::cout << "mean(students_t_distribution<arbpp::arb>(" << a1 << ") : " << boost::math::mean(A) << std::endl;
+		std::cout << "standard_deviation(students_t_distribution<arbpp::arb>(" << a1 << ") : " << boost::math::standard_deviation(A) << std::endl;
+		//std::cout << "quantile(students_t_distribution<arbpp::arb>(" << a1 << ", 0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO numeric_limits & static_cast int
+		std::cout << std::endl;
+	}
+	
+	void triangular()
+	{
+		arbpp::arb a1(-1);	// veges
+		arbpp::arb a2(0.8);	// veges
+		arbpp::arb a3(4);	// veges
+		boost::math::triangular_distribution<arbpp::arb> A(a1, a2, a3);
+		arbpp::arb x(0.8);
+		
+		std::cout << "cdf(triangular_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << a3 << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;
+		std::cout << "pdf(triangular_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << a3 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;
+		std::cout << "mean(triangular_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << a3 << ") : " << boost::math::mean(A) << std::endl;
+		std::cout << "standard_deviation(triangular_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << a3 << ") : " << boost::math::standard_deviation(A) << std::endl;
+		std::cout << "quantile(triangular_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << a3 << ", 0.5) : " << boost::math::quantile(A, 0.5) << std::endl;
+		std::cout << std::endl;
+	}
+	
+	void uniform()
+	{
+		arbpp::arb a1(-1.5);	// veges
+		arbpp::arb a2(4);	// veges
+		boost::math::uniform_distribution<arbpp::arb> A(a1, a2);
+		arbpp::arb x(2.3);
+		
+		std::cout << "cdf(uniform_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;
+		std::cout << "pdf(uniform_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;
+		std::cout << "mean(uniform_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::mean(A) << std::endl;
+		std::cout << "standard_deviation(uniform_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::standard_deviation(A) << std::endl;
+		std::cout << "quantile(uniform_distribution<arbpp::arb>(" << a1 << ", " << a2 << "0.5) : " << boost::math::quantile(A, 0.5) << std::endl;
+		std::cout << std::endl;
+	}
+	
+	void weibull()
+	{
+		arbpp::arb a1(3);	// pozitiv
+		arbpp::arb a2(2);	// pozitiv
+		boost::math::weibull_distribution<arbpp::arb> A(a1, a2);
+		arbpp::arb x(2.3);
+		
+		//std::cout << "cdf(weibull_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;	// TODO numeric_limits
+		std::cout << "pdf(weibull_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;
+		//std::cout << "mean(weibull_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::mean(A) << std::endl;	// TODO static_cast int
+		//std::cout << "standard_deviation(weibull_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::standard_deviation(A) << std::endl;	// TODO static_cast int
+		std::cout << "quantile(weibull_distribution<arbpp::arb>(" << a1 << ", " << a2 << "0.5) : " << boost::math::quantile(A, 0.5) << std::endl;
+		std::cout << std::endl;
+	}
 }
 
 int main()
@@ -1129,6 +1195,11 @@ int main()
 	//distributions::poisson();	// partially unfinished
 	//distributions::rayleigh();	// partially unfinished
 	//distributions::skew_normal();	// unfinished
+	//distributions::students_t();	// partially unfinished
+	//distributions::triangular();
+	//distributions::uniform();
+	//distributions::weibull();	// partially unfinished
+	
 	
 	return 0;
 }
