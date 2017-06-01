@@ -38,8 +38,6 @@
 #include <string>
 #include <type_traits>
 
-#include <boost/math/constants/constants.hpp>	// egy boost libet kell includeolni hogy a megfelelo makrokat megkapja
-
 /// Root Arbpp namespace.
 namespace arbpp
 {
@@ -186,7 +184,7 @@ class arb: private detail::base_arb<>
         template <typename T>
         struct is_arb_float
         {
-            static const bool value = std::is_same<T,float>::value || std::is_same<T,double>::value || std::is_same<T, long double>::value;
+            static const bool value = std::is_same<T,float>::value || std::is_same<T,double>::value;
         };
         // Interoperable types.
         template <typename T>
@@ -265,7 +263,7 @@ class arb: private detail::base_arb<>
         void construct(const T &x)
         {
             arf_raii tmp_arf;
-            ::arf_set_d(tmp_arf,static_cast<long double>(x));
+            ::arf_set_d(tmp_arf,static_cast<double>(x));
             ::arb_set_arf(&m_arb,tmp_arf);
         }
         // Addition.
@@ -1191,9 +1189,13 @@ class arb: private detail::base_arb<>
 		friend std::istream &operator>>(std::istream &is, arb &a)	// TODO std::invalid_argument rossz konverzio eseten, a kivant mukodesre lecserelni
 		{
 			std::string ss;
+			std::cout << "oppre" << std::endl;
 			is >> ss;
+			std::cout << "opin" << std::endl;
 			arb b(ss);
+			std::cout << "opcon" << std::endl;
 			a = b;
+			std::cout << "opeq" << std::endl;
 		}
         /// Midpoint getter.
         /**
@@ -1573,62 +1575,6 @@ class arb: private detail::base_arb<>
 			return retval;
 		}
 		
-		arb sinh() const
-		{
-			arb retval;
-			::arb_sinh(&retval.m_arb, &m_arb, m_prec);
-			retval.m_prec = m_prec;
-			return retval;
-		}
-		
-		arb cosh() const
-		{
-			arb retval;
-			::arb_cosh(&retval.m_arb, &m_arb, m_prec);
-			retval.m_prec = m_prec;
-			return retval;
-		}
-		
-		arb tanh() const
-		{
-			arb retval;
-			::arb_tanh(&retval.m_arb, &m_arb, m_prec);
-			retval.m_prec = m_prec;
-			return retval;
-		}
-		
-		arb coth() const
-		{
-			arb retval;
-			::arb_coth(&retval.m_arb, &m_arb, m_prec);
-			retval.m_prec = m_prec;
-			return retval;
-		}
-		
-		arb asinh() const
-		{
-			arb retval;
-			::arb_asinh(&retval.m_arb, &m_arb, m_prec);
-			retval.m_prec = m_prec;
-			return retval;
-		}
-		
-		arb acosh() const
-		{
-			arb retval;
-			::arb_acosh(&retval.m_arb, &m_arb, m_prec);
-			retval.m_prec = m_prec;
-			return retval;
-		}
-		
-		arb atanh() const
-		{
-			arb retval;
-			::arb_atanh(&retval.m_arb, &m_arb, m_prec);
-			retval.m_prec = m_prec;
-			return retval;
-		}
-		
 		arb ldexp(int ex) const	// gepi epszilon szamitasahoz
 		{
 			arb retval;
@@ -1770,41 +1716,6 @@ inline arb atan2(const arb &a, const arb &b)
 	return a.atan2(b);
 }
 
-inline arb sinh(const arb &a)
-{
-	return a.sinh();
-}
-
-inline arb cosh(const arb &a)
-{
-	return a.cosh();
-}
-
-inline arb tanh(const arb &a)
-{
-	return a.tanh();
-}
-
-inline arb coth(const arb &a)
-{
-	return a.coth();
-}
-
-inline arb asinh(const arb &a)
-{
-	return a.asinh();
-}
-
-inline arb acosh(const arb &a)
-{
-	return a.acosh();
-}
-
-inline arb atanh(const arb &a)
-{
-	return a.atanh();
-}
-
 inline arb ldexp(const arb &a, int n)
 {
 	return a.ldexp(n);
@@ -1835,6 +1746,7 @@ inline arb operator "" _arb(const char *s)
 }
 
 // LB additions
+#include <boost/math/constants/constants.hpp>	// egy boost libet kell includeolni hogy a megfelelo makrokat megkapja TODO talan athelyezni?
 namespace boost
 {
 namespace math

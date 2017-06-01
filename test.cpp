@@ -71,7 +71,7 @@ void arbpp_demo_fpclass()
 	std::cout << "fpclassify(" << A << ") : " << str << std::endl;
 	std::cout << "isfinite(" << A << ") : " << boost::math::isfinite(A) << std::endl;
 	std::cout << "isinf(" << A << ") : " << boost::math::isinf(A) << std::endl;
-	std::cout << "isinf(" << B << ") : " << boost::math::isinf(B) << std::endl;	// nem jo, TODO numeric_limits
+	std::cout << "isinf(" << B << ") : " << boost::math::isinf(B) << std::endl;	// TODO numeric_limits
 	std::cout << "isnan(" << A << ") : " << boost::math::isnan(A) << std::endl;
 	std::cout << "isnormal(" << A << ") : " << boost::math::isnormal(A) << std::endl;
 	std::cout << std::endl;
@@ -139,7 +139,7 @@ void arbpp_demo_complex()
 	// complex
 	std::cout << "complex: " << C << std::endl;
 	std::cout << "asin(" << C << ") : " << asin(C) << std::endl;
-	//std::cout << "acos(" << C << ") : " << acos(C) << std::endl;	// TODO long double arb konstruktor implementalasa
+	std::cout << "acos(" << C << ") : " << acos(C) << std::endl;
 	std::cout << "atan(" << C << ") : " << atan(C) << std::endl;
 	std::cout << "asinh(" << C << ") : " << asinh(C) << std::endl;
 	std::cout << "acosh(" << C << ") : " << acosh(C) << std::endl;
@@ -1136,7 +1136,7 @@ int main()
 	//arbpp_demo_sign();
 	//arbpp_demo_io();
 	//arbpp_demo_const();	// unfinished, "hacked"
-	//arbpp_demo_complex();	// partially unfinished
+	//arbpp_demo_complex();
 	//arbpp_demo_gcd_lcm();	// unfinished, probably unneeded
 	
 	//deriv_roots::arbpp_demo_roots();

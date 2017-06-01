@@ -1,0 +1,27 @@
+Eredmények, összefoglalás
+
+Az [1] C-s programcsomaghoz talált [2] C++ wrapper kiegészítése [3]-ban leírt igényeknek megfelelően.
+A [3]-ban leírt std támogatásból nem valósult meg: frexp(cr1, &i), fmod(cr1), round(cr1), iround(cr1), trunc(cr1), itrunc(cr1)
+	Ezekhez az arb nem biztosított függvényeket.
+	Az fmod függvény a Legendre elliptikus integrálokhoz kellett volna.
+	Az frexp függvény a cbrt (köbgyök) függvényhez kellett volna.
+	
+Egyéb problémák:
+A boost::math::constants lepéldányosítása a futás legelején szegmentálási hibát okozott (akár üres main()-el is).
+	Ezt az arbppconsts.h headerben kézi lepéldányosítás (boost headerből átmásolgatás) megoldja, de persze ezt boost verziónként karban kellene tartani és csak áthidaló megoldás, valamit csak egy bizonyos pontosságot ér el.
+		Ez nem oldott meg minden szegmentálási hibát, mindegyik hibánál le van írva, hogy megoldja-e.
+	Próbáltam a preprocesszálás utáni headerben keresgélni hogy melyik részen omlik össze, de nem jutottam sokra vele, a consts mappában az output.cpp-ben "ITT SZALL EL" kommenttel be van jelolve az a sor (a fájl ki van egészítve kiíró utasítássokkal és a main.cpp gyakorlatilag üres egy darab template specializáláson túl).
+	A kódban ezek a helyek "TODO segfault" kommenttel vannak ellátva.
+A boost sok helyen hivatkozni próbál az std::numeric_limits<arb> osztályra, annak ellenére, hogy ez a [3]-ban nincs benne (amennyiben a megfelelő boost::math::tools dolgok kézzel meg vannak írva), és ez nagyon sok függvénynél fordítási hibát eredményezett.
+	Tettem egy kísérletet arra, hogy ezt a wrapperben definiáljam, viszont problémák merültek fel azzal, hogy constexpr kifejezéseket szeretne, viszont mi egy futásidőben állítható pontosságú könyvtárat használunk.
+		A constexpr fordítási hibát okozott azoknál az adattagoknál, ahol arb típust kellett visszaadni, a konstruktor/destruktor "nem elemiségével" voltak problémái.
+		Ez még kikommentezve benne maradt a kódban.
+	A kódban ezek a sorok "TODO numeric_limits" kommenttel vannak ellátva.
+A boost sok helyen próbált "static_cast<int>(arb)" típusú hívásokat végezni, a [3]-ban ez szintén nincs benne, és ez fordítási hibákat okozott.
+	Tetszőleges pontosságú valós számtípust fix (4-8 byte) pontosságú egészre konvertálni értelmetlen.
+	Elképzelhető, hogy ha a numeric_limits<arb>-ot sikerül megfelelően létrehozni, akkor abból tudni fogja hogy nem egész típus, és nem for erre kísérleteket tenni.
+	A kódban ezek a sorok "TODO static_cast int" kommenttel vannak ellátva (ahol a numeric_limits hiba is fenn áll, ott mindkettő jelezve van).
+
+[1] Arb http://arblib.org/arb.html
+[2] arbpp::arb https://github.com/bluescarni/arbpp
+[3] http://www.boost.org/doc/libs/1_55_0/libs/math/doc/html/math_toolkit/concepts.html
