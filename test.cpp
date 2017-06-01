@@ -605,6 +605,9 @@ namespace special_functions
 #include <boost/math/distributions/non_central_f.hpp>
 #include <boost/math/distributions/non_central_t.hpp>
 #include <boost/math/distributions/pareto.hpp>
+#include <boost/math/distributions/poisson.hpp>
+#include <boost/math/distributions/rayleigh.hpp>
+#include <boost/math/distributions/skew_normal.hpp>
 namespace distributions
 {
 	// itt a kiirasok tukrozni fogjak az eloszlas paramereterit, de a fvhivasok nem egyeznek meg azzal, amit kiirunk
@@ -1012,6 +1015,54 @@ namespace distributions
 		std::cout << "quantile(pareto_distribution<arbpp::arb>(" << a1 << ", " << a2 << "0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO numeric_limits & static_cast int
 		std::cout << std::endl;
 	}
+	
+	void poisson()
+	{
+		arbpp::arb a1(4);
+		boost::math::poisson_distribution<arbpp::arb> A(a1);
+		arbpp::arb x(3);
+		
+		// surusegfv: f(k, a1) = e^(-a1) * a1^k / k!
+		
+		//std::cout << "cdf(poisson_distribution<arbpp::arb>(" << a1 << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
+		//std::cout << "pdf(poisson_distribution<arbpp::arb>(" << a1 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO numeric_limits
+		std::cout << "mean(poisson_distribution<arbpp::arb>(" << a1 << ") : " << boost::math::mean(A) << std::endl;
+		std::cout << "standard_deviation(poisson_distribution<arbpp::arb>(" << a1 << ") : " << boost::math::standard_deviation(A) << std::endl;
+		//std::cout << "quantile(poisson_distribution<arbpp::arb>(" << a1 << ", 0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO numeric_limits & static_cast int
+		std::cout << std::endl;
+	}
+	
+	void rayleigh()
+	{
+		arbpp::arb a1(3.6);	// pozitiv
+		boost::math::rayleigh_distribution<arbpp::arb> A(a1);
+		arbpp::arb x(3.4);
+		
+		// surusegfv: f(x, a1) = x * e^(-x^2 / a1^2) / a1^2
+		
+		//std::cout << "cdf(rayleigh_distribution<arbpp::arb>(" << a1 << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;	// TODO numeric_limits
+		std::cout << "pdf(rayleigh_distribution<arbpp::arb>(" << a1 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;
+		//std::cout << "mean(rayleigh_distribution<arbpp::arb>(" << a1 << ") : " << boost::math::mean(A) << std::endl;	// TODO segfault
+		//std::cout << "standard_deviation(rayleigh_distribution<arbpp::arb>(" << a1 << ") : " << boost::math::standard_deviation(A) << std::endl;	// TODO segfault
+		std::cout << "quantile(rayleigh_distribution<arbpp::arb>(" << a1 << ", 0.5) : " << boost::math::quantile(A, 0.5) << std::endl;
+		std::cout << std::endl;
+	}
+	
+	void skew_normal()
+	{
+		arbpp::arb a1(1);
+		arbpp::arb a2(1.2);	// pozitiv
+		arbpp::arb a3(4);
+		boost::math::skew_normal_distribution<arbpp::arb> A(a1, a2, a3);
+		arbpp::arb x(0.8);
+		
+		//std::cout << "cdf(skew_normal_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << a3 << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
+		//std::cout << "pdf(skew_normal_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << a3 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
+		//std::cout << "mean(skew_normal_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << a3 << ") : " << boost::math::mean(A) << std::endl;	// TODO segfault
+		//std::cout << "standard_deviation(skew_normal_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << a3 << ") : " << boost::math::standard_deviation(A) << std::endl;	// TODO segfaul
+		//std::cout << "quantile(skew_normal_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << a3 << ", 0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO numeric_limits & static_cast int
+		std::cout << std::endl;
+	}
 }
 
 int main()
@@ -1074,7 +1125,10 @@ int main()
 	//distributions::noncentral_beta();	// partially unfinished
 	//distributions::noncentral_f();	// partially unfinished
 	//distributions::noncentral_t();	// unfinished
-	distributions::pareto();	// partially unfinished
+	//distributions::pareto();	// partially unfinished
+	//distributions::poisson();	// partially unfinished
+	//distributions::rayleigh();	// partially unfinished
+	//distributions::skew_normal();	// unfinished
 	
 	return 0;
 }
