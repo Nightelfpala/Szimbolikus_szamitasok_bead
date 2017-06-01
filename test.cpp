@@ -596,6 +596,10 @@ namespace special_functions
 #include <boost/math/distributions/inverse_chi_squared.hpp>
 #include <boost/math/distributions/inverse_gamma.hpp>
 #include <boost/math/distributions/inverse_gaussian.hpp>
+#include <boost/math/distributions/laplace.hpp>
+#include <boost/math/distributions/logistic.hpp>
+#include <boost/math/distributions/lognormal.hpp>
+#include <boost/math/distributions/negative_binomial.hpp>
 namespace distributions
 {
 	// itt a kiirasok tukrozni fogjak az eloszlas paramereterit, de a fvhivasok nem egyeznek meg azzal, amit kiirunk
@@ -858,6 +862,74 @@ namespace distributions
 		//std::cout << "quantile(inverse_gaussian_distribution<arbpp::arb>(" << a1 << ", " << a2 << "0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO static_cast int
 		std::cout << std::endl;
 	}
+	
+	void laplace()
+	{
+		arbpp::arb a1(3);
+		arbpp::arb a2(5);	// pozitiv, kulonben domain_error
+		boost::math::laplace_distribution<arbpp::arb> A(a1, a2);
+		arbpp::arb x(1);
+		
+		// surusegfv: f(x, a1, a2) = 1 / (2 * a2) * e^(-abs(x - a1) / a2)
+		
+		std::cout << "cdf(laplace_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;
+		std::cout << "pdf(laplace_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;
+		std::cout << "mean(laplace_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::mean(A) << std::endl;
+		//std::cout << "standard_deviation(laplace_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::standard_deviation(A) << std::endl;	// TODO segfault
+		std::cout << "quantile(laplace_distribution<arbpp::arb>(" << a1 << ", " << a2 << "0.5) : " << boost::math::quantile(A, 0.5) << std::endl;
+		std::cout << std::endl;
+	}
+	
+	void logistic()
+	{
+		arbpp::arb a1(3);
+		arbpp::arb a2(5);	// pozitiv, kulonben domain_error
+		boost::math::logistic_distribution<arbpp::arb> A(a1, a2);
+		arbpp::arb x(1);
+		
+		//std::cout << "cdf(logistic_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;	// TODO numeric_limits
+		//std::cout << "pdf(logistic_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO numeric_limits
+		std::cout << "mean(logistic_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::mean(A) << std::endl;
+		//std::cout << "standard_deviation(logistic_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::standard_deviation(A) << std::endl;	// TODO segfault
+		std::cout << "quantile(logistic_distribution<arbpp::arb>(" << a1 << ", " << a2 << "0.5) : " << boost::math::quantile(A, 0.5) << std::endl;
+		std::cout << std::endl;
+	}
+	
+	void lognormal()
+	{
+		arbpp::arb a1(3);	// pozitiv
+		arbpp::arb a2(0.4);	// 0 <= a2 <= 1
+		boost::math::lognormal_distribution<arbpp::arb> A(a1, a2);
+		arbpp::arb x(1);	// diszkret elo
+		
+		// surusegfv: f(x, a1, a2) = gamma(a1 + x) / (x! * gamma(a1)) * a2^a1 * (1 - a2)^x
+		
+		//std::cout << "cdf(lognormal_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
+		//std::cout << "pdf(lognormal_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO segfault
+		std::cout << "mean(lognormal_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::mean(A) << std::endl;
+		//std::cout << "standard_deviation(lognormal_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::standard_deviation(A) << std::endl;	// TODO numeric_limits
+		//std::cout << "quantile(lognormal_distribution<arbpp::arb>(" << a1 << ", " << a2 << "0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO numeric_limits & static_cast int
+		std::cout << std::endl;
+	}
+	
+	void negbinom()
+	{
+		arbpp::arb a1(3);	// pozitiv
+		arbpp::arb a2(0.4);	// 0 <= a2 <= 1
+		boost::math::negative_binomial_distribution<arbpp::arb> A(a1, a2);
+		arbpp::arb x(1);	// diszkret elo
+		
+		// surusegfv: f(x, a1, a2) = gamma(a1 + x) / (x! * gamma(a1)) * a2^a1 * (1 - a2)^x
+		
+		//std::cout << "cdf(negative_binomial_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
+		//std::cout << "pdf(negative_binomial_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
+		std::cout << "mean(negative_binomial_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::mean(A) << std::endl;
+		std::cout << "standard_deviation(negative_binomial_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::standard_deviation(A) << std::endl;	// TODO numeric_limits
+		//std::cout << "quantile(negative_binomial_distribution<arbpp::arb>(" << a1 << ", " << a2 << "0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO numeric_limits & static_cast int
+		std::cout << std::endl;
+	}
+	
+	
 }
 
 int main()
@@ -913,6 +985,10 @@ int main()
 	//distributions::inverse_chi_sq();	// partially unfinished
 	//distributions::inverse_gamma();	// partially unfinished
 	//distributions::inverse_normal();	// partially unfinished
+	//distributions::laplace();	// partially unfinished
+	//distributions::logistic();	// partially unfinished
+	//distributions::lognormal();	// partiall unfinished
+	//distributions::negbinom();	// partially unfinished
 	
 	return 0;
 }
