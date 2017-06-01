@@ -112,21 +112,15 @@ void arbpp_demo_io()
 	std::cout << B << std::endl;
 }
 
-/* //TODO - causes segfault on specialization
 #include <boost/math/constants/constants.hpp>
-
-namespace boost{
-namespace math{
-namespace constants{
-template<> arbpp::arb half<arbpp::arb>() { return arbpp::arb("5.00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e-01"); }	// ezzel mukodik, de valoszinuleg ertelmetlenne teszi
-}}}
-
+	// TODO - causes segfault on specialization
+//#include "arbppconsts.h"
+	// this explicitly specializes constants with the values taken from the boost header, avoids segmentation faults
 void arbpp_demo_const()
 {
 	//std::cout << "half:\t" << boost::math::constants::half<arbpp::arb>() << std::endl;
 	//std::cout << "pi:\t" << boost::math::constants::pi<arbpp::arb>() << std::endl;
 }
-*/
 
 
 //#include <boost/math/complex/asin.hpp>
@@ -201,6 +195,7 @@ void arbpp_demo_roots()
 	//arbpp::arb ret = boost::math::tools::newton_raphson_iterate(fD1, startv, minv, maxv, prec);	// elso derivalt kell iteraciohoz
 	//arbpp::arb ret = boost::math::tools::halley_iterate(fD2, startv, minv, maxv, prec);	// masodik derivalt kell
 	arbpp::arb ret = boost::math::tools::schroeder_iterate(fD2, startv, minv, maxv, prec);
+		// mindharom fuggveny mukodik
 	
 	std::cout << "x^2 - 1 gyoke [-1, 1]-ben: " << ret << std::endl;
 	std::cout << ret << "^2 + 1 = " << (pow(ret, arbpp::arb(2)) + 1) << std::endl;
@@ -477,6 +472,7 @@ namespace special_functions
 		std::cout << "ellint_2(" << B << ") : " << boost::math::ellint_2(B) << std::endl;
 		//std::cout << "ellint_3(" << A << ", " << C << ", " << B << ") : " << boost::math::ellint_3(A, C, B) << std::endl;	// TODO fmod
 		//std::cout << "ellint_3(" << B << ", " << A << ") : " << boost::math::ellint_3(B, A) << std::endl;	// TODO segfault - valoszinuleg constants.hpp-bol akar valamit arb-al lepeldanyositani (a main() elott szall el)
+			// itt valoszinuleg a parameterezesem nem jo es azert dob hibat, de a segfault megszunt a konstansok behackelesevel
 		std::cout << std::endl;
 	}
 	
@@ -523,8 +519,8 @@ namespace special_functions
 		// expint(n, x) = integral(1..+inf) e^(-x * t) / t^n dt
 		// expint(x) = -expint(1, -x)
 		
-		//std::cout << "expint(" << n << ", " << A << ") : " << boost::math::expint(n, A) << std::endl;	// TODO segfault
-		//std::cout << "expint(" << A << ") : " << boost::math::expint(A) << std::endl;	// TODO segfault
+		//std::cout << "expint(" << n << ", " << A << ") : " << boost::math::expint(n, A) << std::endl;	// TODO segfault, konstans hack nem eleg
+		//std::cout << "expint(" << A << ") : " << boost::math::expint(A) << std::endl;	// TODO segfault, konstans hack nem eleg
 		std::cout << std::endl;
 	}
 	
@@ -633,7 +629,7 @@ namespace distributions
 			// kurtosis_excess = kurtosis - 3
 		
 		//std::cout << "cdf(normal_distribution<arbpp::arb>(1.5, 2), " << x << ") : " << boost::math::cdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
-		//std::cout << "pdf(normal_distribution<arbpp::arb>(1.5, 2), " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO segfault
+		//std::cout << "pdf(normal_distribution<arbpp::arb>(1.5, 2), " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO segfault, konstans hack megoldja
 		std::cout << "mean(normal_distribution<arbpp::arb>(1.5, 2)) : " << boost::math::mean(A) << std::endl;
 		std::cout << "median(normal_distribution<arbpp::arb>(1.5, 2)) : " << boost::math::median(A) << std::endl;
 		std::cout << "mode(normal_distribution<arbpp::arb>(1.5, 2)) : " << boost::math::mode(A) << std::endl;
@@ -708,9 +704,9 @@ namespace distributions
 			// NINCSEN: mean, std, variance, "stb"
 			// ha ilyet kerdezunk le, BOOST_STATIC_ASSERTION_FAILURE forditaskor
 		
-		//std::cout << "cdf(cauchy_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;	// TODO segfault
-		//std::cout << "pdf(cauchy_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO segfault
-		//std::cout << "quantile(cauchy_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", 0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO segfault
+		//std::cout << "cdf(cauchy_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;	// TODO segfault, konstans hack megoldja
+		//std::cout << "pdf(cauchy_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO segfault, konstans hack megoldja
+		//std::cout << "quantile(cauchy_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", 0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO segfault, konstans hack megoldja
 		std::cout << std::endl;
 	}
 	
@@ -755,8 +751,8 @@ namespace distributions
 		
 		std::cout << "cdf(extreme_value_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;
 		std::cout << "pdf(extreme_value_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;
-		//std::cout << "mean(extreme_value_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::mean(A) << std::endl;	// TODO segfault
-		//std::cout << "standard_deviation(extreme_value_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::standard_deviation(A) << std::endl;	// TODO segfault
+		//std::cout << "mean(extreme_value_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::mean(A) << std::endl;	// TODO segfault, konstans hack megoldja
+		//std::cout << "standard_deviation(extreme_value_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::standard_deviation(A) << std::endl;	// TODO segfault, konstans hack megoldja
 		std::cout << "quantile(extreme_value_distribution<arbpp::arb>(" << a1 << ", " << a2 << "0.5) : " << boost::math::quantile(A, 0.5) << std::endl;
 		std::cout << std::endl;
 	}
@@ -822,7 +818,7 @@ namespace distributions
 		//std::cout << "pdf(hypergeometric_distribution<arbpp::arb>(" << r << ", " << n << ", " << N << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
 		std::cout << "mean(hypergeometric_distribution<arbpp::arb>(" << r << ", " << n << ", " << N << ") : " << boost::math::mean(A) << std::endl;
 		std::cout << "standard_deviation(hypergeometric_distribution<arbpp::arb>(" << r << ", " << n << ", " << N << ") : " << boost::math::standard_deviation(A) << std::endl;
-		//std::cout << "quantile(hypergeometric_distribution<arbpp::arb>(" << r << ", " << n << ", " << N << "0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO segfault
+		//std::cout << "quantile(hypergeometric_distribution<arbpp::arb>(" << r << ", " << n << ", " << N << "0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO segfault, konstans hack megoldja
 		std::cout << std::endl;
 	}
 	
@@ -868,7 +864,7 @@ namespace distributions
 		// surusegfv: f(x, a1, a2) = sqrt(a2 / (2 * pi * x^3)) * e^(-a2 * (x - a1)^2 / (2 * a1^2 *x))
 		
 		//std::cout << "cdf(inverse_gaussian_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
-		//std::cout << "pdf(inverse_gaussian_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO segfault
+		//std::cout << "pdf(inverse_gaussian_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO segfault, konstans hack megoldja
 		std::cout << "mean(inverse_gaussian_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::mean(A) << std::endl;
 		std::cout << "standard_deviation(inverse_gaussian_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::standard_deviation(A) << std::endl;
 		//std::cout << "quantile(inverse_gaussian_distribution<arbpp::arb>(" << a1 << ", " << a2 << "0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO static_cast int
@@ -887,7 +883,7 @@ namespace distributions
 		std::cout << "cdf(laplace_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;
 		std::cout << "pdf(laplace_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;
 		std::cout << "mean(laplace_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::mean(A) << std::endl;
-		//std::cout << "standard_deviation(laplace_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::standard_deviation(A) << std::endl;	// TODO segfault
+		//std::cout << "standard_deviation(laplace_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::standard_deviation(A) << std::endl;	// TODO segfault, konstans hack megoldja
 		std::cout << "quantile(laplace_distribution<arbpp::arb>(" << a1 << ", " << a2 << "0.5) : " << boost::math::quantile(A, 0.5) << std::endl;
 		std::cout << std::endl;
 	}
@@ -902,7 +898,7 @@ namespace distributions
 		//std::cout << "cdf(logistic_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;	// TODO numeric_limits
 		//std::cout << "pdf(logistic_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO numeric_limits
 		std::cout << "mean(logistic_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::mean(A) << std::endl;
-		//std::cout << "standard_deviation(logistic_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::standard_deviation(A) << std::endl;	// TODO segfault
+		//std::cout << "standard_deviation(logistic_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::standard_deviation(A) << std::endl;	// TODO segfault, konstans hack megoldja
 		std::cout << "quantile(logistic_distribution<arbpp::arb>(" << a1 << ", " << a2 << "0.5) : " << boost::math::quantile(A, 0.5) << std::endl;
 		std::cout << std::endl;
 	}
@@ -917,7 +913,7 @@ namespace distributions
 		// surusegfv: f(x, a1, a2) = gamma(a1 + x) / (x! * gamma(a1)) * a2^a1 * (1 - a2)^x
 		
 		//std::cout << "cdf(lognormal_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
-		//std::cout << "pdf(lognormal_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO segfault
+		//std::cout << "pdf(lognormal_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO segfault, konstans hack megoldja
 		std::cout << "mean(lognormal_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::mean(A) << std::endl;
 		//std::cout << "standard_deviation(lognormal_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::standard_deviation(A) << std::endl;	// TODO numeric_limits
 		//std::cout << "quantile(lognormal_distribution<arbpp::arb>(" << a1 << ", " << a2 << "0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO numeric_limits & static_cast int
@@ -1046,8 +1042,8 @@ namespace distributions
 		
 		//std::cout << "cdf(rayleigh_distribution<arbpp::arb>(" << a1 << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;	// TODO numeric_limits
 		std::cout << "pdf(rayleigh_distribution<arbpp::arb>(" << a1 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;
-		//std::cout << "mean(rayleigh_distribution<arbpp::arb>(" << a1 << ") : " << boost::math::mean(A) << std::endl;	// TODO segfault
-		//std::cout << "standard_deviation(rayleigh_distribution<arbpp::arb>(" << a1 << ") : " << boost::math::standard_deviation(A) << std::endl;	// TODO segfault
+		//std::cout << "mean(rayleigh_distribution<arbpp::arb>(" << a1 << ") : " << boost::math::mean(A) << std::endl;	// TODO segfault, konstans hack megoldja
+		//std::cout << "standard_deviation(rayleigh_distribution<arbpp::arb>(" << a1 << ") : " << boost::math::standard_deviation(A) << std::endl;	// TODO segfault, konstans hack megoldja
 		std::cout << "quantile(rayleigh_distribution<arbpp::arb>(" << a1 << ", 0.5) : " << boost::math::quantile(A, 0.5) << std::endl;
 		std::cout << std::endl;
 	}
@@ -1062,8 +1058,8 @@ namespace distributions
 		
 		//std::cout << "cdf(skew_normal_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << a3 << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
 		//std::cout << "pdf(skew_normal_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << a3 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
-		//std::cout << "mean(skew_normal_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << a3 << ") : " << boost::math::mean(A) << std::endl;	// TODO segfault
-		//std::cout << "standard_deviation(skew_normal_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << a3 << ") : " << boost::math::standard_deviation(A) << std::endl;	// TODO segfaul
+		//std::cout << "mean(skew_normal_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << a3 << ") : " << boost::math::mean(A) << std::endl;	// TODO segfault, konstans hack megoldja
+		//std::cout << "standard_deviation(skew_normal_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << a3 << ") : " << boost::math::standard_deviation(A) << std::endl;	// TODO segfault, konstans hack megoldja
 		//std::cout << "quantile(skew_normal_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << a3 << ", 0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO numeric_limits & static_cast int
 		std::cout << std::endl;
 	}
@@ -1139,7 +1135,7 @@ int main()
 	//arbpp_demo_fpclass();	// unfinished, compiles & runs
 	//arbpp_demo_sign();
 	//arbpp_demo_io();
-	//arbpp_demo_const();	// unfinished
+	//arbpp_demo_const();	// unfinished, "hacked"
 	//arbpp_demo_complex();	// partially unfinished
 	//arbpp_demo_gcd_lcm();	// unfinished, probably unneeded
 	
@@ -1173,28 +1169,28 @@ int main()
 	//distributions::bernoulli();
 	//distributions::beta_distr();	// partially unfinished
 	//distributions::binomial_distr();	// partially unfinished
-	//distributions::cauchy_lorentz();	// unfinished
+	//distributions::cauchy_lorentz();	// unfinished, hackable
 	//distributions::chi_sqr();	// partially unfinished
 	//distributions::exponential();	// partially unfinished
 	//distributions::extreme();	// partially unfinished
 	//distributions::fisher_f();	// partially unfinished
 	//distributions::gamma_distr();	// partially unfinished
 	//distributions::geometric();	// partially unfinished
-	//distributions::hypergeometric();	// partially unfinished
+	//distributions::hypergeometric();	// partially unfinished, partially hackable
 	//distributions::inverse_chi_sq();	// partially unfinished
 	//distributions::inverse_gamma();	// partially unfinished
-	//distributions::inverse_normal();	// partially unfinished
-	//distributions::laplace();	// partially unfinished
-	//distributions::logistic();	// partially unfinished
-	//distributions::lognormal();	// partiall unfinished
+	//distributions::inverse_normal();	// partially unfinished, partially hackable
+	//distributions::laplace();	// partially unfinished, hackable
+	//distributions::logistic();	// partially unfinished, partially hackable
+	//distributions::lognormal();	// partiall unfinished, partially hackable
 	//distributions::negbinom();	// partially unfinished
 	//distributions::noncentral_beta();	// partially unfinished
 	//distributions::noncentral_f();	// partially unfinished
 	//distributions::noncentral_t();	// unfinished
 	//distributions::pareto();	// partially unfinished
 	//distributions::poisson();	// partially unfinished
-	//distributions::rayleigh();	// partially unfinished
-	//distributions::skew_normal();	// unfinished
+	//distributions::rayleigh();	// partially unfinished, partially hackable
+	//distributions::skew_normal();	// unfinished, partially hackable
 	//distributions::students_t();	// partially unfinished
 	//distributions::triangular();
 	//distributions::uniform();
