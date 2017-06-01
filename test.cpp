@@ -600,6 +600,9 @@ namespace special_functions
 #include <boost/math/distributions/logistic.hpp>
 #include <boost/math/distributions/lognormal.hpp>
 #include <boost/math/distributions/negative_binomial.hpp>
+#include <boost/math/distributions/non_central_beta.hpp>
+#include <boost/math/distributions/non_central_chi_squared.hpp>
+#include <boost/math/distributions/non_central_f.hpp>
 namespace distributions
 {
 	// itt a kiirasok tukrozni fogjak az eloszlas paramereterit, de a fvhivasok nem egyeznek meg azzal, amit kiirunk
@@ -929,7 +932,52 @@ namespace distributions
 		std::cout << std::endl;
 	}
 	
+	void noncentral_beta()
+	{
+		arbpp::arb a1(8);	// pozitiv
+		arbpp::arb a2(12);	// pozitiv
+		arbpp::arb a3(30);	// nemnegativ
+		boost::math::non_central_beta_distribution<arbpp::arb> A(a1, a2, a3);
+		arbpp::arb x(0.8);
+		
+		//std::cout << "cdf(non_central_beta_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << a3 << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
+		//std::cout << "pdf(non_central_beta_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << a3 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
+		std::cout << "mean(non_central_beta_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << a3 << ") : " << boost::math::mean(A) << std::endl;
+		std::cout << "standard_deviation(non_central_beta_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << a3 << ") : " << boost::math::standard_deviation(A) << std::endl;
+		//std::cout << "quantile(non_central_beta_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << a3 << ", 0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO numeric_limits & static_cast int
+		std::cout << std::endl;
+	}
 	
+	void noncentral_chi_sq()
+	{
+		arbpp::arb a1(4);	// pozitiv
+		arbpp::arb a2(2.1);	// nemnegativ
+		boost::math::non_central_chi_squared_distribution<arbpp::arb> A(a1, a2);
+		arbpp::arb x(6.3);
+		
+		//std::cout << "cdf(non_central_chi_squared_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
+		//std::cout << "pdf(non_central_chi_squared_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
+		std::cout << "mean(non_central_chi_squared_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::mean(A) << std::endl;
+		std::cout << "standard_deviation(non_central_chi_squared_distribution<arbpp::arb>(" << a1 << ", " << a2 << ") : " << boost::math::standard_deviation(A) << std::endl;
+		//std::cout << "quantile(non_central_chi_squared_distribution<arbpp::arb>(" << a1 << ", " << a2 << "0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO numeric_limits & static_cast int
+		std::cout << std::endl;
+	}
+	
+	void noncentral_f()
+	{
+		arbpp::arb a1(8);	// pozitiv
+		arbpp::arb a2(12);	// pozitiv
+		arbpp::arb a3(30);	// nemnegativ
+		boost::math::non_central_f_distribution<arbpp::arb> A(a1, a2, a3);
+		arbpp::arb x(0.8);
+		
+		//std::cout << "cdf(non_central_f_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << a3 << ", " << x << ") : " << boost::math::cdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
+		//std::cout << "pdf(non_central_f_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << a3 << ", " << x << ") : " << boost::math::pdf(A, x) << std::endl;	// TODO numeric_limits & static_cast int
+		std::cout << "mean(non_central_f_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << a3 << ") : " << boost::math::mean(A) << std::endl;
+		std::cout << "standard_deviation(non_central_f_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << a3 << ") : " << boost::math::standard_deviation(A) << std::endl;
+		//std::cout << "quantile(non_central_f_distribution<arbpp::arb>(" << a1 << ", " << a2 << ", " << a3 << ", 0.5) : " << boost::math::quantile(A, 0.5) << std::endl;	// TODO numeric_limits
+		std::cout << std::endl;
+	}
 }
 
 int main()
@@ -989,6 +1037,8 @@ int main()
 	//distributions::logistic();	// partially unfinished
 	//distributions::lognormal();	// partiall unfinished
 	//distributions::negbinom();	// partially unfinished
+	//distributions::noncentral_beta();	// partially unfinished
+	distributions::noncentral_f();
 	
 	return 0;
 }
